@@ -65,7 +65,7 @@ const studentSchema = new mongoose.Schema(
     },
     class: {
       type: String,
-      enum: ["8", "9", "10"],
+      enum: ["7", "8", "9", "10"],
       required: true,
     },
     schoolName: {

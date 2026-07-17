@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     absolute: `${SITE.name} | ${SITE.org}`,
   },
   description:
-    "Rurally Smile Foundation द्वारा आयोजित प्रतिभा खोज प्रतियोगिता 2026 — केवल कक्षा 8–10, हिन्दी माध्यम। उत्क्रमित उच्च विद्यालय रतनपुरा, सीवान। आवेदन, Admit Card, Result ऑनलाइन।",
+    "Rurally Smile Foundation द्वारा आयोजित प्रतिभा खोज प्रतियोगिता 2026 — केवल कक्षा 7–10, हिन्दी माध्यम। उत्क्रमित उच्च विद्यालय रतनपुरा, सीवान। आवेदन, Admit Card, Result ऑनलाइन।",
   alternates: { canonical: "/" },
   openGraph: {
     title: SITE.name,

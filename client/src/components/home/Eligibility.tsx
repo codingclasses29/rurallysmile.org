@@ -12,11 +12,11 @@ export function Eligibility() {
         <div className="grid gap-10 lg:grid-cols-2">
           <SectionReveal>
             <span className={portalPage.badge}>Eligibility</span>
-            <h2 className={`${portalPage.title} mt-4`}>केवल कक्षा 8 से 10 तक</h2>
+            <h2 className={`${portalPage.title} mt-4`}>केवल कक्षा 7 से 10 तक</h2>
             <p className={portalPage.subtitle}>
-              परीक्षा केवल Classes 8, 9 और 10 के विद्यार्थियों के लिए
+              परीक्षा केवल Classes 7, 8, 9 और 10 के विद्यार्थियों के लिए
             </p>
-            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="mt-6 grid grid-cols-4 gap-2 sm:gap-3">
               {ELIGIBILITY_CLASSES.map((c, i) => (
                 <motion.div
                   key={c}

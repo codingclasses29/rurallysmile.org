@@ -48,6 +48,7 @@ export const CATEGORY_OPTIONS = [
 ] as const;
 
 export const CLASS_OPTIONS = [
+  { label: "Class 7", value: "7" },
   { label: "Class 8", value: "8" },
   { label: "Class 9", value: "9" },
   { label: "Class 10", value: "10" },

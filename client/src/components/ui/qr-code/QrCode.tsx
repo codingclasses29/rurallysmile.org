@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { HiDownload, HiRefresh, HiShieldCheck } from "react-icons/hi";
 import { Button } from "@/components/ui/button/Button";
@@ -29,7 +29,7 @@ export function QrCode({
   const [manual, setManual] = useState("");
   const [verifyMsg, setVerifyMsg] = useState<string | null>(null);
 
-  const generate = async () => {
+  const generate = useCallback(async () => {
     if (!canvasRef.current || !value) return;
     try {
       await QRCode.toCanvas(canvasRef.current, value, {
@@ -41,11 +41,11 @@ export function QrCode({
     } catch {
       setError("QR generate करने में समस्या हुई।");
     }
-  };
+  }, [size, value]);
 
   useEffect(() => {
     void generate();
-  }, [value, size]);
+  }, [generate]);
 
   const download = () => {
     const canvas = canvasRef.current;

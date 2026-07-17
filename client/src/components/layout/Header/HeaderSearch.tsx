@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -109,6 +108,7 @@ export function HeaderSearch({ className }: { className?: string }) {
                     <button
                       type="button"
                       role="option"
+                      aria-selected={false}
                       className="flex w-full px-4 py-2.5 text-left text-sm font-medium text-brand-primary hover:bg-slate-50 dark:text-white dark:hover:bg-slate-800"
                       onClick={() => go(item.href)}
                     >

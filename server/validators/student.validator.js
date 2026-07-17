@@ -10,8 +10,8 @@ export const studentValidator = [
     .withMessage("Enter valid 10-digit mobile number"),
   body("class")
     .notEmpty()
-    .isIn(["8", "9", "10"])
-    .withMessage("Class must be 8, 9 or 10"),
+    .isIn(["7", "8", "9", "10"])
+    .withMessage("Class must be 7, 8, 9 or 10"),
   body("schoolName").trim().notEmpty().withMessage("School name is required"),
   body("dob").optional().notEmpty().withMessage("Date of birth is required"),
   body("gender")

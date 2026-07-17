@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState } from "react";
 import { HiChevronDown, HiSearch, HiX } from "react-icons/hi";
 import { cn } from "@/utils/cn";
 

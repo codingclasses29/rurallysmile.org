@@ -14,7 +14,7 @@ const MAX_MEDIA_BYTES = 3 * 1024 * 1024;
 const MAX_UNCOMPRESSED_BYTES = 100 * 1024 * 1024;
 const MAX_ROWS = 1000;
 const MAX_ENTRIES = 2500;
-const CLASSES = new Set(["8", "9", "10"]);
+const CLASSES = new Set(["7", "8", "9", "10"]);
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 
 const normKey = (value) =>
@@ -70,7 +70,7 @@ export function normalizeStudentRow(raw, rowNumber) {
   };
   const errors = [];
   if (!data.name) errors.push("Name is required");
-  if (!CLASSES.has(data.class)) errors.push("Class must be 8, 9 or 10");
+  if (!CLASSES.has(data.class)) errors.push("Class must be 7, 8, 9 or 10");
   if (!/^\+?\d{10,15}$/.test(data.mobile)) errors.push("Valid mobile is required");
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     errors.push("Email is invalid");

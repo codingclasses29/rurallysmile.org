@@ -148,7 +148,7 @@ export default function AdminResultsPage() {
                 onChange={(event) => setCls(event.target.value)}
               >
                 <option value="">All classes</option>
-                {["8", "9", "10"].map((value) => (
+                {["7", "8", "9", "10"].map((value) => (
                   <option key={value} value={value}>Class {value}</option>
                 ))}
               </select>

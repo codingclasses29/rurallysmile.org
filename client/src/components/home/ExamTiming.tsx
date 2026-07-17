@@ -6,7 +6,6 @@ import {
   EXAM_SLOTS,
   SITE,
 } from "@/constants/site";
-import { portalPage } from "@/assets/portalStyles";
 import { SectionReveal } from "@/components/home/SectionReveal";
 
 export function ExamTiming() {

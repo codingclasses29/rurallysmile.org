@@ -64,7 +64,7 @@ export default function MeritListClient() {
             }}
           >
             <option value="">All Classes</option>
-            {["8", "9", "10"].map((c) => (
+            {["7", "8", "9", "10"].map((c) => (
               <option key={c} value={c}>
                 Class {c}
               </option>

@@ -210,7 +210,7 @@ export const publishResults = asyncHandler(async (req, res) => {
   const { class: cls, studentIds, all } = req.body || {};
   const studentQuery = {};
   if (cls) {
-    if (!["8", "9", "10"].includes(String(cls))) {
+    if (!["7", "8", "9", "10"].includes(String(cls))) {
       throw new ApiError(400, "Invalid class");
     }
     studentQuery.class = String(cls);
@@ -249,7 +249,7 @@ export const publishResults = asyncHandler(async (req, res) => {
 
 export const recalculateMerit = asyncHandler(async (req, res) => {
   const classes = req.body?.class ? [String(req.body.class)] : undefined;
-  if (classes && !["8", "9", "10"].includes(classes[0])) {
+  if (classes && !["7", "8", "9", "10"].includes(classes[0])) {
     throw new ApiError(400, "Invalid class");
   }
   const report = await resultService.recalculatePublishedMerit({ classes });

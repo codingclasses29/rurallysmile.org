@@ -17,7 +17,7 @@ const BRAND = {
 
 const EXAM_SLOTS = {
   junior: {
-    label: "Class 8",
+    label: "Classes 7–8",
     reportingTime: "08:30 AM",
     examTime: "09:00 AM – 10:30 AM",
   },
@@ -375,7 +375,7 @@ export const createAdmitCardPDF = async (student, admitCard) => {
     .fontSize(7)
     .fillColor(BRAND.navy)
     .text(
-      "Class 8: 09:00 AM – 10:30 AM (Report 08:30 AM)  |  Class 9–10: 10:00 AM – 11:30 AM (Report 09:30 AM)",
+      "Classes 7–8: 09:00 AM – 10:30 AM (Report 08:30 AM)  |  Classes 9–10: 10:00 AM – 11:30 AM (Report 09:30 AM)",
       left + 8,
       y + 16,
       { width: contentW - 16 }

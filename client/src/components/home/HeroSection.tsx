@@ -70,7 +70,7 @@ export function HeroSection() {
             {SITE.titleHindi}
           </h1>
           <p className="mt-3 text-base font-medium text-cyan-100 sm:text-lg">
-            केवल कक्षा 8, 9 एवं 10 ({SITE.medium}) · चार विषय मिलकर 100 अंक
+            केवल कक्षा 7, 8, 9 एवं 10 ({SITE.medium}) · चार विषय मिलकर 100 अंक
           </p>
 
           <div className="card portal-hero-info mt-6">
@@ -188,7 +188,7 @@ export function HeroSection() {
                   <p>
                     <span className="font-semibold text-slate-500">Class / कक्षा</span>
                     <br />
-                    <span className="font-bold">Class 8</span>
+                    <span className="font-bold">Classes 7–8</span>
                   </p>
                 </div>
                 <div className="text-center">
@@ -206,7 +206,7 @@ export function HeroSection() {
               <div className="alert alert-success py-2 small mb-0">
                 <p className="fw-bold mb-1">Exam · {SITE.examDateLabel}</p>
                 <p className="mb-0 tabular-nums">
-                  Class 8: {EXAM_SLOTS.junior.examTime} · Class 9–10:{" "}
+                  Classes 7–8: {EXAM_SLOTS.junior.examTime} · Classes 9–10:{" "}
                   {EXAM_SLOTS.senior.examTime}
                 </p>
               </div>

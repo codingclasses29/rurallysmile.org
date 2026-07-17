@@ -33,8 +33,8 @@ export const publicRegistrationValidator = [
   body("category").optional().isIn(["General", "OBC", "SC", "ST", "EWS", "Other"]),
   body("class")
     .notEmpty()
-    .isIn(["8", "9", "10"])
-    .withMessage("Class must be 8–10"),
+    .isIn(["7", "8", "9", "10"])
+    .withMessage("Class must be 7–10"),
   body("schoolName").trim().notEmpty().withMessage("School name is required"),
   body("medium").optional().trim(),
   body("state").optional().trim(),

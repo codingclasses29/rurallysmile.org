@@ -68,8 +68,8 @@ export const addressDetailsSchema = z.object({
 export const schoolDetailsSchema = z.object({
   class: z
     .string()
-    .refine((v) => ["8", "9", "10"].includes(v), {
-      message: "Class must be 8, 9 or 10",
+    .refine((v) => ["7", "8", "9", "10"].includes(v), {
+      message: "Class must be 7, 8, 9 or 10",
     }),
   schoolName: z
     .string()

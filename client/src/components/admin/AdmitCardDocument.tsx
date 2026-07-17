@@ -170,7 +170,7 @@ export function AdmitCardDocument({ student, admit, zoom = 1 }: Props) {
             {slot.examTime} · Report {slot.reportingTime}
           </div>
           <div className="small mt-1">
-            Class 8: 09:00–10:30 (Report 08:30) · Class 9–10: 10:00–11:30
+            Classes 7–8: 09:00–10:30 (Report 08:30) · Classes 9–10: 10:00–11:30
             (Report 09:30)
           </div>
         </div>

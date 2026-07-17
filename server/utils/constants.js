@@ -28,4 +28,4 @@ export const RESULT_STATUS = {
   FAIL: "Fail",
 };
 
-export const CLASSES = ["6", "7", "8", "9", "10"];
+export const CLASSES = ["7", "8", "9", "10"];

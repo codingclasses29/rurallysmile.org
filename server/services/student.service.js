@@ -141,7 +141,7 @@ export const buildStudentFilter = async ({
     query.status = status;
   }
   if (cls) {
-    if (!["8", "9", "10"].includes(String(cls))) {
+    if (!["7", "8", "9", "10"].includes(String(cls))) {
       throw new ApiError(400, "Invalid class");
     }
     query.class = String(cls);

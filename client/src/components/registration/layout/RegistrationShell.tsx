@@ -13,7 +13,7 @@ export function RegistrationShell({ children }: Props) {
     <>
       <PageHeader
         title="Student Registration"
-        description={`${SITE.titleHindi} · केवल कक्षा 8–10 · हिन्दी माध्यम`}
+        description={`${SITE.titleHindi} · केवल कक्षा 7–10 · हिन्दी माध्यम`}
       />
       <section className="container-page section-pad pt-8" aria-label="Registration form">
         <aside className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-teal-100 bg-white/90 p-4 shadow-soft">

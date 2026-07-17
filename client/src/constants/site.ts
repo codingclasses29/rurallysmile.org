@@ -55,7 +55,7 @@ export const SITE = {
   medium: "हिन्दी माध्यम",
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Ratnpura+Siwan+Bihar",
   announcement:
-    "प्रतिभा खोज प्रतियोगिता 2026 · पंजीकरण अंतिम तिथि 31 अगस्त 2026 · परीक्षा 05 सितम्बर 2026 · कक्षा 8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
+    "प्रतिभा खोज प्रतियोगिता 2026 · पंजीकरण अंतिम तिथि 31 अगस्त 2026 · परीक्षा 05 सितम्बर 2026 · कक्षा 7–8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
   social: {
     facebook: "https://www.facebook.com/",
     instagram: "https://www.instagram.com/",
@@ -68,9 +68,9 @@ export const SITE = {
 /** Class-wise exam slots (official schedule) */
 export const EXAM_SLOTS = {
   junior: {
-    classes: "8",
-    classesLabel: "कक्षा 8",
-    classesLabelEn: "Class 8",
+    classes: "7–8",
+    classesLabel: "कक्षा 7 से 8",
+    classesLabelEn: "Classes 7 to 8",
     reportingTime: "08:30 AM",
     examTime: "09:00 AM – 10:30 AM",
     examStart: "09:00 AM",
@@ -89,7 +89,7 @@ export const EXAM_SLOTS = {
 
 export type ExamSlot = (typeof EXAM_SLOTS)[keyof typeof EXAM_SLOTS];
 
-/** Resolve exam slot from student class (8 junior, 9–10 senior) */
+/** Resolve exam slot from student class (7–8 junior, 9–10 senior) */
 export function getExamSlotForClass(cls?: string | number | null): ExamSlot {
   const n = Number(String(cls || "").replace(/\D/g, ""));
   if (n >= 9) return EXAM_SLOTS.senior;
@@ -245,7 +245,7 @@ export const HEADER_NOTIFICATIONS = [
   {
     id: "2",
     title: "Exam 05 Sep",
-    message: "कक्षा 8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
+    message: "कक्षा 7–8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
     href: "/notice",
     time: "Schedule",
   },
@@ -318,7 +318,7 @@ export const QUICK_ACTIONS = [
   },
 ] as const;
 
-export const ELIGIBILITY_CLASSES = ["8", "9", "10"] as const;
+export const ELIGIBILITY_CLASSES = ["7", "8", "9", "10"] as const;
 
 export const SUBJECTS = [
   { title: "हिन्दी", en: "Hindi", icon: "📘" },
@@ -473,7 +473,7 @@ export const LATEST_NOTICES = [
     slug: "exam-schedule",
     title: "परीक्षा समय-सारिणी",
     excerpt:
-      "05 सितम्बर 2026 · कक्षा 8: 09:00–10:30 AM · कक्षा 9–10: 10:00–11:30 AM",
+      "05 सितम्बर 2026 · कक्षा 7–8: 09:00–10:30 AM · कक्षा 9–10: 10:00–11:30 AM",
     date: "05 Sep 2026",
   },
 ] as const;
@@ -509,7 +509,7 @@ export const FAQS = [
   },
   {
     q: "परीक्षा का समय क्या है?",
-    a: "कक्षा 8: रिपोर्टिंग 08:30 AM, परीक्षा 09:00–10:30 AM। कक्षा 9–10: रिपोर्टिंग 09:30 AM, परीक्षा 10:00–11:30 AM। तिथि: 05 सितम्बर 2026 (शनिवार)।",
+    a: "कक्षा 7–8: रिपोर्टिंग 08:30 AM, परीक्षा 09:00–10:30 AM। कक्षा 9–10: रिपोर्टिंग 09:30 AM, परीक्षा 10:00–11:30 AM। तिथि: 05 सितम्बर 2026 (शनिवार)।",
   },
   {
     q: "Result कैसे देखें?",
@@ -521,6 +521,6 @@ export const FAQS = [
   },
   {
     q: "कौन आवेदन कर सकता है?",
-    a: "केवल कक्षा 8, 9 और 10 के विद्यार्थी (हिन्दी माध्यम) आवेदन कर सकते हैं। विषय: हिन्दी, गणित, सामान्य ज्ञान, सामान्य अध्ययन।",
+    a: "केवल कक्षा 7, 8, 9 और 10 के विद्यार्थी (हिन्दी माध्यम) आवेदन कर सकते हैं। विषय: हिन्दी, गणित, सामान्य ज्ञान, सामान्य अध्ययन।",
   },
 ] as const;
