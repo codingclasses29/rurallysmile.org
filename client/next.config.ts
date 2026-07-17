@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
-const API_ORIGIN =
-  process.env.API_PROXY_TARGET || "http://localhost:5000";
+// Keep this value as an origin only. The rewrite below owns the `/api/v1`
+// prefix. Also tolerate an env value entered with `/api/v1`.
+const API_ORIGIN = (
+  process.env.API_PROXY_TARGET || "https://rurallysmile-org-1.onrender.com"
+)
+  .replace(/\/$/, "")
+  .replace(/\/api\/v1$/, "");
 
 const nextConfig = {
   reactStrictMode: true,
