@@ -1,0 +1,264 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "../styles/portal-premium.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Rurally Smile — teal · orange · navy */
+  --bs-primary: #0f766e;
+  --bs-primary-rgb: 15, 118, 110;
+  --bs-secondary: #0f172a;
+  --bs-secondary-rgb: 15, 23, 42;
+  --bs-success: #16a34a;
+  --bs-success-rgb: 22, 163, 74;
+  --bs-warning: #f97316;
+  --bs-warning-rgb: 249, 115, 22;
+  --bs-danger: #dc2626;
+  --bs-danger-rgb: 220, 38, 38;
+  --bs-info: #06b6d4;
+  --bs-info-rgb: 6, 182, 212;
+  --bs-light: #f0fdfa;
+  --bs-dark: #0f172a;
+  --bs-body-bg: #f4fbfa;
+  --bs-body-color: #1e293b;
+  --bs-border-radius: 1rem;
+  --bs-border-radius-lg: 1.25rem;
+  --bs-border-radius-pill: 50rem;
+  --color-primary: #0f766e;
+  --color-secondary: #0f172a;
+  --color-accent: #f97316;
+  --color-success: #16a34a;
+  --color-warning: #f97316;
+  --color-danger: #dc2626;
+  --color-info: #06b6d4;
+  --color-gray: #f4fbfa;
+  --ui-bg: #f4fbfa;
+  --ui-surface: #ffffff;
+  --ui-border: #cdedea;
+  --ui-text: #1e293b;
+  --ui-muted: #64748b;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --portal-teal: #0f766e;
+  --portal-teal-bright: #1399a2;
+  --portal-teal-soft: #e6f8f5;
+  --portal-orange: #f97316;
+  --portal-navy: #0f172a;
+  --portal-cream: #fffaf3;
+  --portal-shadow: 0 14px 40px rgba(15, 118, 110, 0.1);
+  --portal-shadow-hover: 0 22px 55px rgba(15, 118, 110, 0.18);
+}
+
+.dark {
+  --ui-bg: #0f172a;
+  --ui-surface: #1e293b;
+  --ui-border: #334155;
+  --ui-text: #f1f5f9;
+  --ui-muted: #94a3b8;
+  --color-gray: #0f172a;
+}
+
+/* Harmonize Bootstrap with portal brand */
+.btn-primary {
+  --bs-btn-bg: #0f766e;
+  --bs-btn-border-color: #0f766e;
+  --bs-btn-hover-bg: #0e7490;
+  --bs-btn-hover-border-color: #0e7490;
+  --bs-btn-active-bg: #0e7490;
+  --bs-btn-focus-shadow-rgb: 15, 118, 110;
+}
+.btn-secondary {
+  --bs-btn-bg: #0f172a;
+  --bs-btn-border-color: #0f172a;
+  --bs-btn-hover-bg: #1e293b;
+  --bs-btn-hover-border-color: #1e293b;
+}
+.btn-success {
+  --bs-btn-bg: #16a34a;
+  --bs-btn-border-color: #16a34a;
+  --bs-btn-hover-bg: #15803d;
+}
+.btn-warning {
+  --bs-btn-bg: #f97316;
+  --bs-btn-border-color: #f97316;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: #ea580c;
+  --bs-btn-hover-color: #fff;
+}
+.btn-info {
+  --bs-btn-bg: #06b6d4;
+  --bs-btn-border-color: #06b6d4;
+  --bs-btn-hover-bg: #0891b2;
+}
+.bg-brand-admin {
+  background: linear-gradient(135deg, #0f172a, #1399a2) !important;
+}
+.text-primary {
+  color: var(--portal-teal) !important;
+}
+.bg-primary-subtle {
+  background-color: #ccfbf1 !important;
+}
+.border-primary-subtle {
+  border-color: #99f6e4 !important;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    @apply bg-ui-bg text-ui-text font-body antialiased;
+    min-width: 320px;
+    line-height: 1.65;
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(20, 184, 166, 0.08), transparent 24rem),
+      radial-gradient(circle at 92% 18%, rgba(249, 115, 22, 0.07), transparent 22rem);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-semibold text-brand-primary dark:text-white;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  ::selection {
+    color: white;
+    background: var(--portal-teal);
+  }
+
+  :focus-visible {
+    outline: 3px solid rgba(249, 115, 22, 0.55);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-pad {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  .section-title {
+    @apply text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-brand-secondary dark:text-white;
+  }
+
+  .section-subtitle {
+    @apply mt-2 text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-2xl;
+  }
+
+  .ui-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .foundation-section {
+    @apply relative overflow-hidden py-12 md:py-16 lg:py-20;
+  }
+
+  .foundation-section-alt {
+    background:
+      linear-gradient(135deg, rgba(240, 253, 250, 0.96), rgba(255, 250, 243, 0.94)),
+      radial-gradient(circle at top right, rgba(249, 115, 22, 0.1), transparent 35%);
+  }
+
+  .foundation-eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-teal-700 shadow-sm;
+  }
+
+  .foundation-card {
+    @apply rounded-3xl border border-teal-100 bg-white/95 p-5 shadow-soft transition duration-300;
+  }
+
+  .foundation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--portal-shadow-hover);
+    border-color: rgba(15, 118, 110, 0.28);
+  }
+
+  .foundation-icon {
+    @apply inline-grid h-12 w-12 place-items-center rounded-2xl text-xl text-white shadow-md;
+    background: linear-gradient(135deg, var(--portal-teal), var(--portal-teal-bright));
+  }
+
+  .foundation-link {
+    @apply font-semibold text-teal-700 underline-offset-4 transition hover:text-orange-600 hover:underline;
+  }
+
+  .foundation-form-control {
+    @apply w-full rounded-2xl border border-teal-100 bg-white px-4 py-3 text-sm text-slate-800 shadow-sm transition placeholder:text-slate-400;
+  }
+
+  .foundation-form-control:focus {
+    @apply border-teal-500 ring-4 ring-teal-100 outline-none;
+  }
+}
+
+/* Bootstrap surfaces share the same Foundation visual language. */
+.card,
+.modal-content,
+.dropdown-menu {
+  border-color: var(--ui-border);
+  box-shadow: var(--portal-shadow);
+}
+
+.form-control,
+.form-select {
+  border-color: #b9dfdb;
+  min-height: 44px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--portal-teal);
+  box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.14);
+}
+
+.table {
+  --bs-table-striped-bg: rgba(15, 118, 110, 0.035);
+  --bs-table-hover-bg: rgba(15, 118, 110, 0.065);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .btn {
+    min-height: 42px;
+  }
+}

@@ -1,0 +1,11 @@
+.netlify/
+node_modules/
+client/node_modules/
+server/node_modules/
+client/.next/
+client/tsconfig.tsbuildinfo
+server/.env
+client/.env.local
+server/logs/
+server/uploads/
+*.log

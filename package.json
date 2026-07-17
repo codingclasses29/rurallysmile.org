@@ -1,0 +1,15 @@
+{
+  "name": "pratibha-khoj-exam-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rurally Smile Foundation - Pratibha Khoj Competition 2026 Online Exam Portal",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "install:all": "npm install && npm --prefix client install && npm --prefix server install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

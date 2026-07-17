@@ -1,0 +1,234 @@
+/* Premium Admin shell — Rurally Smile Foundation */
+.admin-shell {
+  --admin-sidebar: #071824;
+  --admin-sidebar-2: #0b3338;
+  --admin-accent: #0f766e;
+  --admin-success: #16a34a;
+  --admin-warning: #f97316;
+  --admin-danger: #dc2626;
+  --admin-purple: #1399a2;
+  --admin-header: linear-gradient(90deg, #071824 0%, #0b4b4a 55%, #0f766e 100%);
+  background:
+    radial-gradient(circle at 100% 0, rgba(249, 115, 22, 0.07), transparent 25rem),
+    #f4fbfa;
+}
+
+.admin-sidebar {
+  width: 272px;
+  background: linear-gradient(180deg, #071824 0%, #0b3338 52%, #071824 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-sidebar .brand-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.admin-nav-group-title {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.9);
+  padding: 0.35rem 0.85rem;
+  margin-top: 0.35rem;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.85rem;
+  margin: 0 0.4rem;
+  border-radius: 0.55rem;
+  color: rgba(226, 232, 240, 0.78);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-nav-link:hover {
+  background: rgba(20, 184, 166, 0.18);
+  color: #fff;
+}
+
+.admin-nav-link.active {
+  background: linear-gradient(90deg, #0f766e, #1399a2);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(15, 118, 110, 0.38);
+  border-left: 3px solid #fb923c;
+}
+
+.admin-nav-link.nested {
+  padding-left: 1.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(203, 213, 225, 0.75);
+}
+
+.admin-header-bar {
+  background: var(--admin-header);
+  color: #fff;
+}
+
+.admin-stat-card {
+  border: 1px solid rgba(15, 118, 110, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(15, 118, 110, 0.08);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 38px rgba(15, 118, 110, 0.16);
+}
+
+.admin-stat-card .stat-top {
+  height: 6px;
+}
+
+.admin-stat-card .stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.admin-module-tile {
+  border: 1px solid rgba(15, 118, 110, 0.1);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.07);
+  padding: 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+  height: 100%;
+}
+
+.admin-module-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(15, 118, 110, 0.15);
+  color: inherit;
+}
+
+.admin-module-tile .tile-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.admin-table img.student-thumb {
+  width: 40px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-admin-success {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+.btn-admin-success:hover {
+  background: #15803d;
+  border-color: #15803d;
+  color: #fff;
+}
+.btn-admin-orange {
+  background: #f97316;
+  border-color: #f97316;
+  color: #fff;
+  font-weight: 600;
+}
+.btn-admin-orange:hover {
+  background: #ea580c;
+  border-color: #ea580c;
+  color: #fff;
+}
+.btn-admin-purple {
+  background: #1399a2;
+  border-color: #1399a2;
+  color: #fff;
+}
+.btn-admin-purple:hover {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #fff;
+}
+
+.admin-coming-card {
+  border: 1px solid rgba(15, 118, 110, 0.1);
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(15, 118, 110, 0.07);
+}
+
+.admin-page-header {
+  border: 1px solid rgba(15, 118, 110, 0.12);
+  border-left: 5px solid #0f766e;
+  border-radius: 1rem;
+  background: linear-gradient(110deg, #fff, #f0fdfa);
+  padding: 1rem 1.15rem;
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.07);
+}
+
+.admin-shell main > div > h1:first-child,
+.admin-shell main > section > h1:first-child {
+  color: #0f172a;
+}
+
+.admin-shell .table-responsive {
+  border-radius: 1rem;
+}
+
+.admin-shell .table thead th {
+  white-space: nowrap;
+  color: #0f172a;
+  background: #e6f8f5;
+  border-bottom-color: #b9dfdb;
+}
+
+.admin-shell .form-label {
+  color: #334155;
+  font-weight: 600;
+}
+
+.admin-shell :focus-visible {
+  outline: 3px solid rgba(249, 115, 22, 0.5);
+  outline-offset: 2px;
+}
+
+@media (max-width: 991.98px) {
+  .admin-header-bar .btn {
+    min-width: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-shell *,
+  .admin-shell *::before,
+  .admin-shell *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

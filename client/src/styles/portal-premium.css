@@ -1,0 +1,521 @@
+/* Portal premium layer — Rurally Smile Foundation */
+
+.portal-section-pad {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .portal-section-pad {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+@media (min-width: 1024px) {
+  .portal-section-pad {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* ========== FULL PAGE BACKGROUND ========== */
+.portal-page-bg {
+  background-color: #f4fbfa;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 0% -10%, rgba(19, 153, 162, 0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(249, 115, 22, 0.12), transparent),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(6, 182, 212, 0.1), transparent),
+    linear-gradient(180deg, #f4fbfa 0%, #ecfdfb 35%, #fffaf3 70%, #f0fdfa 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Soft white with teal wash */
+.bg-section-white {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.9) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.bg-section-white::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231399a2' fill-opacity='0.04'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h-2zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-section-white > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bg-section-mesh {
+  background-color: #f0fdfa;
+  background-image:
+    radial-gradient(at 15% 20%, rgba(19, 153, 162, 0.16) 0, transparent 45%),
+    radial-gradient(at 85% 10%, rgba(249, 115, 22, 0.1) 0, transparent 40%),
+    radial-gradient(at 60% 90%, rgba(6, 182, 212, 0.12) 0, transparent 45%),
+    linear-gradient(160deg, #ecfeff 0%, #f0f9ff 50%, #fffbeb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-section-dots {
+  background-color: #ffffff;
+  background-image: radial-gradient(rgba(19, 153, 162, 0.12) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  position: relative;
+}
+
+.bg-section-warm {
+  background:
+    radial-gradient(circle at 10% 80%, rgba(249, 115, 22, 0.12), transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(19, 153, 162, 0.12), transparent 40%),
+    linear-gradient(180deg, #fff7ed 0%, #f0f9ff 50%, #ecfeff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-section-soft {
+  background: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 50%, #f0fdfa 100%);
+  position: relative;
+}
+
+.portal-mesh-bg {
+  background-image:
+    radial-gradient(at 20% 30%, rgba(19, 153, 162, 0.14) 0, transparent 50%),
+    radial-gradient(at 80% 10%, rgba(249, 115, 22, 0.1) 0, transparent 45%),
+    radial-gradient(at 50% 90%, rgba(6, 182, 212, 0.08) 0, transparent 50%);
+}
+
+.portal-grid-pattern {
+  background-image:
+    linear-gradient(rgba(19, 153, 162, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(19, 153, 162, 0.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* ========== HERO ========== */
+.portal-hero-bg {
+  background:
+    linear-gradient(90deg, rgba(7, 24, 36, 0.96) 0%, rgba(8, 46, 49, 0.9) 48%, rgba(15, 118, 110, 0.7) 100%),
+    url("/images/gallery/winners-group.png") center 42% / cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+.portal-hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(249, 115, 22, 0.18) 0, transparent 35%),
+    radial-gradient(circle at 85% 15%, rgba(6, 182, 212, 0.2) 0, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(19, 153, 162, 0.25) 0, transparent 45%);
+  pointer-events: none;
+}
+.portal-hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  opacity: 0.45;
+}
+.portal-hero-blob-1 {
+  width: 320px;
+  height: 320px;
+  background: #f97316;
+  top: -80px;
+  right: 10%;
+  animation: portal-blob 8s ease-in-out infinite;
+}
+.portal-hero-blob-2 {
+  width: 280px;
+  height: 280px;
+  background: #06b6d4;
+  bottom: 10%;
+  left: -60px;
+  animation: portal-blob 10s ease-in-out infinite reverse;
+}
+
+/* ========== COUNTDOWN ========== */
+.portal-countdown-section {
+  background: linear-gradient(180deg, #ffffff 0%, #ecfeff 50%, #f0f9ff 100%);
+  position: relative;
+  overflow: hidden;
+}
+.portal-countdown-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231399a2' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.7;
+  pointer-events: none;
+}
+.portal-countdown-box {
+  background: linear-gradient(145deg, #ffffff, #ecfeff);
+  border: 2px solid #99f6e4 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 24px rgba(19, 153, 162, 0.15);
+  color: #0f172a !important;
+  font-weight: 800;
+}
+
+/* ========== PRIZE ========== */
+.portal-prize-section {
+  background:
+    radial-gradient(ellipse at top, rgba(19, 153, 162, 0.12), transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(249, 115, 22, 0.1), transparent 50%),
+    linear-gradient(180deg, #ffffff 0%, #f0fdfa 60%, #ecfeff 100%);
+  position: relative;
+  overflow: hidden;
+}
+.portal-prize-card {
+  border: none !important;
+  border-radius: 1.25rem !important;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+  background: #fff;
+}
+.portal-prize-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(19, 153, 162, 0.2);
+}
+.portal-prize-card.is-highlight {
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.35), 0 12px 32px rgba(249, 115, 22, 0.2);
+}
+
+/* ========== EXAM CENTRE ========== */
+.portal-exam-centre-section {
+  background:
+    radial-gradient(circle at 0% 50%, rgba(249, 115, 22, 0.1), transparent 45%),
+    radial-gradient(circle at 100% 50%, rgba(19, 153, 162, 0.12), transparent 45%),
+    linear-gradient(180deg, #fff7ed 0%, #f0f9ff 100%);
+  position: relative;
+}
+.portal-exam-centre-card {
+  border: none !important;
+  border-radius: 1.5rem !important;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+}
+.portal-exam-centre-left {
+  background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 50%, #0e7490 100%) !important;
+  color: #fff;
+  position: relative;
+}
+.portal-exam-centre-left::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(249, 115, 22, 0.2);
+  pointer-events: none;
+}
+.portal-exam-centre-right {
+  background-color: #f1f5f9;
+  background-image:
+    linear-gradient(135deg, #e2e8f0 25%, transparent 25%),
+    linear-gradient(225deg, #e2e8f0 25%, transparent 25%),
+    linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+    linear-gradient(315deg, #e2e8f0 25%, transparent 25%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  min-height: 280px;
+}
+
+/* ========== DATES ========== */
+.portal-dates-section {
+  background: linear-gradient(160deg, #ffffff 0%, #e0f2fe 45%, #ccfbf1 100%);
+  position: relative;
+  overflow: hidden;
+}
+.portal-dates-section::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(19, 153, 162, 0.14), transparent 65%);
+  top: -120px;
+  left: -100px;
+  pointer-events: none;
+}
+.portal-date-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(19, 153, 162, 0.15) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.portal-date-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(19, 153, 162, 0.15);
+}
+
+/* ========== QUICK LINKS ========== */
+.portal-quick-card {
+  border: 1px solid rgba(15, 118, 110, 0.12) !important;
+  border-radius: 1.25rem !important;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 28px rgba(15, 118, 110, 0.09);
+  background: #fff !important;
+}
+.portal-quick-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(19, 153, 162, 0.2);
+}
+.portal-quick-card .card-top-bar {
+  height: 5px;
+  width: 100%;
+}
+.portal-quick-card .icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.portal-quick-card.card-reg .card-top-bar { background: linear-gradient(90deg, #16a34a, #22c55e); }
+.portal-quick-card.card-reg .icon-circle { background: linear-gradient(135deg, #16a34a, #22c55e); }
+.portal-quick-card.card-admit .card-top-bar { background: linear-gradient(90deg, #0f766e, #14b8a6); }
+.portal-quick-card.card-admit .icon-circle { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+.portal-quick-card.card-result .card-top-bar { background: linear-gradient(90deg, #f97316, #fb923c); }
+.portal-quick-card.card-result .icon-circle { background: linear-gradient(135deg, #f97316, #fb923c); }
+.portal-quick-card.card-marksheet .card-top-bar { background: linear-gradient(90deg, #0f172a, #0f766e); }
+.portal-quick-card.card-marksheet .icon-circle { background: linear-gradient(135deg, #0f172a, #0f766e); }
+.portal-quick-card.card-merit .card-top-bar { background: linear-gradient(90deg, #ea580c, #f97316); }
+.portal-quick-card.card-merit .icon-circle { background: linear-gradient(135deg, #ea580c, #f97316); }
+.portal-quick-card.card-notice .card-top-bar { background: linear-gradient(90deg, #0f172a, #334155); }
+.portal-quick-card.card-notice .icon-circle { background: linear-gradient(135deg, #0f172a, #475569); }
+
+.portal-hero-info.card {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(12px);
+  border-radius: 1.25rem !important;
+  color: #fff;
+}
+
+/* Shared homepage polish */
+.portal-section-pad > .container-page {
+  position: relative;
+  z-index: 1;
+}
+
+.portal-section-pad .section-title::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 0.7rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0f766e, #f97316);
+}
+
+.portal-section-pad .text-center .section-title::after,
+.portal-section-pad .section-title.text-center::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.portal-section-pad .card {
+  border-color: rgba(15, 118, 110, 0.12);
+}
+
+.portal-section-pad .badge.bg-primary,
+.portal-section-pad .text-bg-primary {
+  background-color: #0f766e !important;
+}
+
+@media (max-width: 575.98px) {
+  .portal-section-pad {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .portal-quick-card .card-body {
+    padding: 1rem !important;
+  }
+
+  .portal-quick-card .icon-circle {
+    width: 46px;
+    height: 46px;
+  }
+}
+.portal-hero-info .list-group-item {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #fff;
+}
+
+.portal-card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.portal-card-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-100%) skewX(-12deg);
+}
+.portal-card-shine:hover::after {
+  animation: portal-shine 0.9s ease;
+}
+@keyframes portal-shine {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+@keyframes portal-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -15px) scale(1.05); }
+}
+@keyframes portal-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.portal-float {
+  animation: portal-float 4s ease-in-out infinite;
+}
+.portal-border-animated {
+  background: linear-gradient(90deg, #1399a2, #f97316, #1399a2);
+  background-size: 200% 100%;
+  animation: portal-border-flow 4s ease infinite;
+}
+@keyframes portal-border-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    overflow: hidden !important;
+  }
+
+  body:has(.portal-doc-print) * {
+    visibility: hidden !important;
+  }
+
+  body:has(.portal-doc-print) .portal-doc-print,
+  body:has(.portal-doc-print) .portal-doc-print * {
+    visibility: visible !important;
+  }
+
+  .portal-no-print {
+    display: none !important;
+  }
+  .portal-doc-print {
+    position: fixed !important;
+    inset: 0 auto auto 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  .admit-card-a4,
+  .marksheet-doc-sheet {
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 0 !important;
+    height: 296mm !important;
+    max-height: 296mm !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    break-after: avoid-page;
+    break-inside: avoid-page;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* Document watermark logo (admit + marksheet) */
+.doc-with-watermark {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  color: #0f172a;
+}
+.doc-with-watermark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/icons/icons.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 55% auto;
+  opacity: 0.07;
+}
+.doc-with-watermark > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* On-screen A4 preview for admit card */
+.admit-card-a4 {
+  width: 100%;
+  max-width: 210mm;
+  min-height: 260mm;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+  border: 1px solid #b9dfdb;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.marksheet-doc-sheet {
+  width: 100%;
+  max-width: 210mm;
+  min-height: 260mm;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+  border: 1px solid #b9dfdb;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.marksheet-document-content {
+  position: static !important;
+  padding-bottom: 24mm !important;
+}
+
+.marksheet-document-footer {
+  position: absolute;
+  right: 12mm;
+  bottom: 8mm;
+  left: 12mm;
+}
+
+
