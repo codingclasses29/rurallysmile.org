@@ -23,10 +23,9 @@ export const sendRegistrationOtp = async (emailInput) => {
   if (existing) throw new ApiError(409, "Email already registered");
 
   const otp = generateOTP();
-  saveOTP(otpKey(email), otp);
 
   try {
-    await sendMail(
+    const delivery = await sendMail(
       email,
       "OTP Verification – Pratibha Khoj 2026",
       `<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
@@ -37,10 +36,22 @@ export const sendRegistrationOtp = async (emailInput) => {
         <p>— Rurally Smile Foundation</p>
       </div>`
     );
+    if (delivery?.skipped) {
+      throw new ApiError(
+        503,
+        "Email service is not configured. Add EMAIL and EMAIL_PASSWORD on Render."
+      );
+    }
   } catch (err) {
-    logger.warn(`Registration OTP email failed for ${email}: ${err.message}`);
-    // Still keep OTP for verification / dev fallback
+    logger.error(`Registration OTP email failed for ${email}: ${err.message}`);
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(
+      502,
+      "OTP email could not be sent. Check Render email credentials and try again."
+    );
   }
+
+  saveOTP(otpKey(email), otp);
 
   const payload = {
     email,

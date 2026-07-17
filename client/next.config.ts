@@ -2,7 +2,9 @@
 // Keep this value as an origin only. The rewrite below owns the `/api/v1`
 // prefix. Also tolerate an env value entered with `/api/v1`.
 const API_ORIGIN = (
-  process.env.API_PROXY_TARGET || "https://rurallysmile-org-1.onrender.com"
+  process.env.API_PROXY_TARGET ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://rurallysmile-org-1.onrender.com"
 )
   .replace(/\/$/, "")
   .replace(/\/api\/v1$/, "");
