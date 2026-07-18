@@ -17,14 +17,14 @@ const nextConfig = {
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/v1/:path*",
-        destination: `${API_ORIGIN}/api/v1/:path*`,
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/v1/:path*",
+  //       destination: `${API_ORIGIN}/api/v1/:path*`,
+  //     },
+  //   ];
+  // },
   webpack: (config: { resolve: { alias?: Record<string, string> } }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
