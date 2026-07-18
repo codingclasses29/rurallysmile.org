@@ -91,7 +91,7 @@ export default function AdminNoticesPage() {
         titleHindi,
         description,
         published: true,
-        type: "General",
+        type: "notice",
       });
       notify.success("Notice created");
       setTitle("");
