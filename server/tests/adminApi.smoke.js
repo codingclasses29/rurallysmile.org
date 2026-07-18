@@ -11,7 +11,7 @@ import Gallery from "../models/Gallery.js";
 import ExamCenter from "../models/ExamCenter.js";
 import Admin from "../models/Admin.js";
 
-const API = process.env.SMOKE_API_URL || "https://rurallysmile-org-1.onrender.com/api/v1";
+const API = process.env.SMOKE_API_URL || "https://rurallysmile-org-4.onrender.com/api/v1";
 const suffix = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
 const registrationNumber = `SMOKE${suffix}`;
 const centerCode = `SMOKE-${suffix}`;

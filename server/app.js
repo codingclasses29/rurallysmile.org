@@ -32,10 +32,20 @@ app.use(cookieParser());
 // CORS CONFIGURATION
 // ===============================
 
-const allowedOrigins = [
+const defaultOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://127.0.0.1:3000",
   "http://localhost:5173",
-  "https://rurallysmile-org.vercel.app"
+  "https://rurallysmile-org.vercel.app",
 ];
+
+const envOrigins = String(config.CLIENT_URL || "")
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -43,7 +53,7 @@ const corsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error(`CORS blocked for origin: ${origin}`));
     }
   },
 

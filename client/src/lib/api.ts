@@ -4,8 +4,10 @@ import axios from "axios";
  * Prefer an explicit API origin from env, but ignore broken values injected by
  * deployment config and fall back to known-safe origins.
  */
-const PROD_API_ORIGIN = "https://rurallysmile-org-1.onrender.com/";
+const PROD_API_ORIGIN = "https://rurallysmile-org-4.onrender.com";
 const LOCAL_API_ORIGIN = "http://localhost:5000/api/v1";
+const API_PREFIX = "/api/v1";
+const BROWSER_API_BASE = API_PREFIX;
 
 function normalizeApiBase(value?: string | null) {
   const raw = value?.trim();
@@ -20,22 +22,28 @@ function normalizeApiBase(value?: string | null) {
   }
 }
 
+function ensureApiPrefix(value: string) {
+  return value.endsWith(API_PREFIX) ? value : `${value}${API_PREFIX}`;
+}
+
 function resolveApiBase() {
+  if (typeof window !== "undefined") {
+    return BROWSER_API_BASE;
+  }
+
   const publicApi = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
   if (publicApi) {
-    return publicApi;
+    return ensureApiPrefix(publicApi);
   }
 
   const proxy = normalizeApiBase(process.env.API_PROXY_TARGET);
   if (proxy) {
-    return proxy.endsWith("/api/v1") ? proxy : `${proxy}/api/v1`;
+    return ensureApiPrefix(proxy);
   }
 
-  if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
-    return PROD_API_ORIGIN;
-  }
-
-  return LOCAL_API_ORIGIN;
+  return process.env.NODE_ENV === "production"
+    ? ensureApiPrefix(PROD_API_ORIGIN.replace(/\/$/, ""))
+    : LOCAL_API_ORIGIN;
 }
 
 const API_BASE_URL = resolveApiBase();

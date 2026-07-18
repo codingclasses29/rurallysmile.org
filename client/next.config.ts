@@ -4,7 +4,7 @@
 const API_ORIGIN = (
   process.env.API_PROXY_TARGET ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://rurallysmile-org-1.onrender.com"
+  "https://rurallysmile-org-4.onrender.com"
 )
   .replace(/\/$/, "")
   .replace(/\/api\/v1$/, "");
@@ -17,14 +17,6 @@ const nextConfig = {
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: "/api/v1/:path*",
-  //       destination: `${API_ORIGIN}/api/v1/:path*`,
-  //     },
-  //   ];
-  // },
   webpack: (config: { resolve: { alias?: Record<string, string> } }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
