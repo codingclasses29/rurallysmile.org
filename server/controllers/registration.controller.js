@@ -8,10 +8,21 @@ import * as registrationService from "../services/registration.service.js";
 import { createRegistrationReceiptPDF } from "../services/pdf.service.js";
 import { parsePagination, parseStrictBoolean } from "../utils/adminWorkflow.js";
 
-/** Public: send OTP to email */
+/** Public: send OTP to email (SMS fallback when SMTP blocked) */
 export const sendOtp = asyncHandler(async (req, res) => {
+  const relaySecret = process.env.OTP_RELAY_SECRET || "";
+  const headerSecret = String(req.headers["x-otp-relay-secret"] || "");
+  const relayAuthenticated = Boolean(
+    relaySecret && headerSecret && headerSecret === relaySecret
+  );
+
   const data = await registrationService.sendRegistrationOtp(
-    req.body.email || req.body.mobile
+    req.body.email,
+    req.body.mobile || req.body.whatsapp,
+    {
+      prepareOnly: Boolean(req.body.prepareOnly) && relayAuthenticated,
+      relayAuthenticated,
+    }
   );
   sendSuccess(res, 200, data.message || "OTP sent", data);
 });

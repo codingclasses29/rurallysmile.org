@@ -8,6 +8,11 @@ export const sendOtpValidator = [
     .isEmail()
     .withMessage("Enter a valid email address")
     .normalizeEmail(),
+  body("mobile")
+    .optional({ checkFalsy: true })
+    .trim()
+    .matches(/^[6-9]\d{9}$/)
+    .withMessage("Enter valid 10-digit mobile"),
 ];
 
 export const verifyOtpValidator = [

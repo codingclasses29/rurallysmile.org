@@ -7,10 +7,18 @@ export type RegisterResult = {
 };
 
 export const registrationService = {
-  sendOtp: async (email: string) => {
+  sendOtp: async (email: string, mobile?: string) => {
     const { data } = await api.post<
-      ApiResponse<{ email: string; expiresIn: number; devOtp?: string }>
-    >("/registration/send-otp", { email });
+      ApiResponse<{
+        email: string;
+        expiresIn: number;
+        channel?: "email" | "sms";
+        devOtp?: string;
+      }>
+    >("/registration/send-otp", {
+      email,
+      ...(mobile ? { mobile } : {}),
+    });
     return data;
   },
 

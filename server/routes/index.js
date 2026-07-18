@@ -33,11 +33,28 @@ router.use("/settings", settingRoutes);
 router.use("/ai", aiRoutes);
 
 router.get("/health", (req, res) => {
+  const emailSmtp = Boolean(
+    process.env.EMAIL || process.env.NODEMAILER_EMAIL
+  );
+  const emailHttps = Boolean(process.env.RESEND_API_KEY);
+  const sms = Boolean(
+    process.env.TWILIO_ACCOUNT_SID &&
+      process.env.TWILIO_AUTH_TOKEN &&
+      process.env.TWILIO_PHONE_NUMBER
+  );
+
   res.json({
     success: true,
     message: "Server Running",
     time: new Date(),
-    data: { version: "v1" },
+    data: {
+      version: "v1",
+      otpDelivery: {
+        resendHttps: emailHttps,
+        smtpConfigured: emailSmtp,
+        twilioSms: sms,
+      },
+    },
     errors: null,
   });
 });
