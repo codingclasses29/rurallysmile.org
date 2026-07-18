@@ -14,18 +14,37 @@ function buildTargetUrl(path: string[], request: NextRequest) {
   return `${API_ORIGIN}/api/v1/${joinedPath}${search}`;
 }
 
+const HOP_BY_HOP_REQUEST = new Set([
+  "host",
+  "origin",
+  "connection",
+  "content-length",
+  "accept-encoding",
+  "transfer-encoding",
+]);
+
+const HOP_BY_HOP_RESPONSE = new Set([
+  "content-encoding",
+  "content-length",
+  "transfer-encoding",
+  "connection",
+]);
+
 async function proxy(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { path = [] } = await context.params;
   const targetUrl = buildTargetUrl(path, request);
   const headers = new Headers();
 
   request.headers.forEach((value, key) => {
-    const lower = key.toLowerCase();
-    if (lower === "host" || lower === "origin" || lower === "content-length") {
+    if (HOP_BY_HOP_REQUEST.has(key.toLowerCase())) {
       return;
     }
     headers.set(key, value);
   });
+
+  // Ask upstream for plain bytes. Node fetch decompresses gzip, so
+  // forwarding Content-Encoding would break the browser (ERR_CONTENT_DECODING_FAILED).
+  headers.set("accept-encoding", "identity");
 
   const init: RequestInit = {
     method: request.method,
@@ -41,7 +60,7 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
   const responseHeaders = new Headers();
 
   upstream.headers.forEach((value, key) => {
-    if (key.toLowerCase() === "content-length") {
+    if (HOP_BY_HOP_RESPONSE.has(key.toLowerCase())) {
       return;
     }
     responseHeaders.append(key, value);
