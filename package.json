@@ -4,10 +4,12 @@
   "private": true,
   "description": "Rurally Smile Foundation - Pratibha Khoj Competition 2026 Online Exam Portal",
   "scripts": {
+    "build": "npm --prefix client run build",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
-    "install:all": "npm install && npm --prefix client install && npm --prefix server install"
+    "install:all": "npm install && npm --prefix client install && npm --prefix server install",
+    "postinstall": "npm --prefix client install"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
