@@ -1,16 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { MongoClient } from "mongodb";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-const API_ORIGIN = (
-  process.env.API_PROXY_TARGET ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://rurallysmile-org-4.onrender.com"
-)
-  .replace(/\/$/, "")
-  .replace(/\/api\/v1$/, "");
 
 const EMAIL_USER =
   process.env.EMAIL ||
@@ -22,23 +15,17 @@ const EMAIL_PASS =
   process.env.NODEMAILER_PASSWORD ||
   process.env.SMTP_PASS ||
   "";
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI || "";
 
-function isSmtpBlocked(err: unknown) {
-  const e = err as { code?: string; message?: string };
-  const code = String(e?.code || "");
-  const msg = String(e?.message || "").toLowerCase();
-  return (
-    code === "ETIMEDOUT" ||
-    code === "ECONNREFUSED" ||
-    code === "ESOCKET" ||
-    msg.includes("timeout") ||
-    msg.includes("connection")
-  );
+function generateOtp() {
+  return String(Math.floor(100000 + Math.random() * 900000));
 }
 
 async function sendOtpEmail(to: string, otp: string) {
   if (!EMAIL_USER || !EMAIL_PASS) {
-    return { skipped: true as const, reason: "not_configured" };
+    throw new Error(
+      "EMAIL/EMAIL_PASSWORD missing on Vercel. Add Gmail app password in Project → Settings → Environment Variables."
+    );
   }
 
   const transporter = nodemailer.createTransport({
@@ -46,9 +33,9 @@ async function sendOtpEmail(to: string, otp: string) {
     port: 587,
     secure: false,
     requireTLS: true,
-    connectionTimeout: 10_000,
-    greetingTimeout: 8_000,
-    socketTimeout: 15_000,
+    connectionTimeout: 12_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 20_000,
     auth: { user: EMAIL_USER, pass: EMAIL_PASS },
   });
 
@@ -65,109 +52,100 @@ async function sendOtpEmail(to: string, otp: string) {
     </div>`,
   });
 
-  return { skipped: false as const, messageId: info.messageId };
+  return info.messageId;
+}
+
+async function withMongo<T>(
+  fn: (db: ReturnType<MongoClient["db"]>) => Promise<T>
+) {
+  if (!MONGO_URI) {
+    throw new Error(
+      "MONGO_URI missing on Vercel. Add the same MongoDB URI used by the API."
+    );
+  }
+  const client = new MongoClient(MONGO_URI);
+  await client.connect();
+  try {
+    return await fn(client.db());
+  } finally {
+    await client.close();
+  }
 }
 
 /**
- * Registration OTP: prefer email from Vercel (SMTP allowed here),
- * while OTP is stored on Render. Relay secret lets Render return the OTP
- * only to this trusted route.
+ * Self-contained OTP on Vercel:
+ * 1) Store OTP in Mongo (same collection Render verify reads)
+ * 2) Send email via Gmail SMTP from Vercel (Render free blocks SMTP)
  */
 export async function POST(request: NextRequest) {
-  const body = await request.json().catch(() => ({}));
-  const email = String(body.email || "").trim().toLowerCase();
-  const mobile = String(body.mobile || "").trim();
-
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json(
-      { success: false, message: "Enter a valid email address", data: null, errors: null },
-      { status: 400 }
-    );
-  }
-
-  const relaySecret = process.env.OTP_RELAY_SECRET || "";
-  const prepareHeaders: Record<string, string> = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  };
-  if (relaySecret) {
-    prepareHeaders["x-otp-relay-secret"] = relaySecret;
-  }
-
-  // 1) Ask Render to create + store OTP (relay mode returns otp for Vercel email)
-  const prepareRes = await fetch(`${API_ORIGIN}/api/v1/registration/send-otp`, {
-    method: "POST",
-    headers: prepareHeaders,
-    body: JSON.stringify({
-      email,
-      mobile: mobile || undefined,
-      prepareOnly: Boolean(relaySecret),
-    }),
-  });
-
-  const prepareJson = await prepareRes.json().catch(() => ({}));
-
-  // If Render already delivered (email/SMS), pass through
-  if (prepareRes.ok && prepareJson?.data?.channel && prepareJson.data.channel !== "pending") {
-    return NextResponse.json(prepareJson, { status: prepareRes.status });
-  }
-
-  const relayOtp = prepareJson?.data?.relayOtp || prepareJson?.data?.devOtp;
-  if (!prepareRes.ok || !relayOtp) {
-    // Fall back: return Render error (SMS may still work after server deploy)
-    return NextResponse.json(
-      prepareJson?.message
-        ? prepareJson
-        : {
-            success: false,
-            message: "OTP could not be prepared. Redeploy the API on Render.",
-            data: null,
-            errors: null,
-          },
-      { status: prepareRes.status || 502 }
-    );
-  }
-
-  // 2) Send email from Vercel (bypasses Render free SMTP block)
   try {
-    const delivery = await sendOtpEmail(email, String(relayOtp));
-    if (delivery.skipped) {
+    const body = await request.json().catch(() => ({}));
+    const email = String(body.email || "").trim().toLowerCase();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         {
           success: false,
-          message:
-            "Add EMAIL and EMAIL_PASSWORD on Vercel (Gmail app password) to send OTP email.",
+          message: "Enter a valid email address",
           data: null,
           errors: null,
         },
-        { status: 503 }
+        { status: 400 }
       );
     }
-  } catch (err) {
-    const blocked = isSmtpBlocked(err);
-    return NextResponse.json(
-      {
-        success: false,
-        message: blocked
-          ? "Vercel could not reach Gmail SMTP. Add RESEND_API_KEY or use Twilio SMS on Render."
-          : err instanceof Error
-            ? err.message
-            : "OTP email failed",
-        data: null,
-        errors: null,
+
+    const otp = generateOtp();
+    const key = `reg:${email}`;
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    await withMongo(async (db) => {
+      const existing = await db.collection("students").findOne({ email });
+      if (existing) {
+        const err = new Error("Email already registered");
+        (err as Error & { status: number }).status = 409;
+        throw err;
+      }
+
+      await db.collection("otps").updateOne(
+        { key },
+        {
+          $set: {
+            key,
+            otp,
+            expiresAt,
+            updatedAt: new Date(),
+          },
+          $setOnInsert: { createdAt: new Date() },
+        },
+        { upsert: true }
+      );
+    });
+
+    const messageId = await sendOtpEmail(email, otp);
+
+    return NextResponse.json({
+      success: true,
+      message: "OTP sent to your email",
+      data: {
+        email,
+        channel: "email",
+        expiresIn: 300,
+        ...(process.env.NODE_ENV !== "production" ? { devOtp: otp } : {}),
       },
-      { status: 502 }
+      errors: null,
+      meta: { messageId },
+    });
+  } catch (err) {
+    const status =
+      typeof err === "object" && err && "status" in err
+        ? Number((err as { status: number }).status)
+        : 502;
+    const message =
+      err instanceof Error ? err.message : "OTP email could not be sent";
+
+    return NextResponse.json(
+      { success: false, message, data: null, errors: null },
+      { status: status >= 400 && status < 600 ? status : 502 }
     );
   }
-
-  return NextResponse.json({
-    success: true,
-    message: "OTP sent to your email",
-    data: {
-      email,
-      channel: "email",
-      expiresIn: 300,
-    },
-    errors: null,
-  });
 }

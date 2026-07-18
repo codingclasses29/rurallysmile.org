@@ -87,7 +87,24 @@ export const sendOtpWhatsApp = async (mobile, otp) => {
   const text = `Pratibha Khoj 2026 OTP: ${otp}
 वैधता: 5 मिनट
 Rurally Smile Foundation`;
-  return sendWhatsApp(mobile, text);
+  // Prefer SMS first — WhatsApp requires a WhatsApp-enabled sender on Twilio
+  try {
+    const msg = await twilioSend({ to: mobile, body: text, channel: "sms" });
+    if (msg.skipped) return msg;
+    logger.info(`OTP SMS sent to ${mobile}: ${msg.sid}`);
+    return msg;
+  } catch (err) {
+    logger.error(`OTP SMS failed for ${mobile}: ${err.message}`);
+    try {
+      const msg = await twilioSend({ to: mobile, body: text, channel: "whatsapp" });
+      if (msg.skipped) return msg;
+      logger.info(`OTP WhatsApp sent to ${mobile}: ${msg.sid}`);
+      return msg;
+    } catch (e) {
+      logger.error(`OTP WhatsApp failed for ${mobile}: ${e.message}`);
+      return { skipped: true, error: e.message || err.message };
+    }
+  }
 };
 
 export default { sendWhatsApp, sendRegistrationWhatsApp, sendOtpWhatsApp };

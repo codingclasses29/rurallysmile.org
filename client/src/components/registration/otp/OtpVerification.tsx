@@ -42,9 +42,9 @@ export function OtpVerification({
         subtitle={`हम ${email || "आपके email"} पर 6-अंकों का OTP भेजेंगे। OTP 5 मिनट तक मान्य है।`}
       />
 
-      <Alert variant="info" title="OTP Verification">
-        OTP पहले email पर भेजा जाएगा। अगर server email न भेज पाए तो आपके
-        registered mobile पर SMS/WhatsApp से OTP आएगा।
+      <Alert variant="info" title="Email OTP">
+        OTP आपके registered email पर Gmail से भेजा जाएगा। Verify के बाद ही Submit
+        होगा।
       </Alert>
 
       {hint && (
@@ -76,7 +76,7 @@ export function OtpVerification({
               disabled={cooldown > 0 || !email}
               onClick={onSend}
             >
-              {otpSent ? "Resend OTP" : "Send OTP"}
+              {otpSent ? "Resend OTP to Email" : "Send OTP to Email"}
             </Button>
             <Button
               type="button"

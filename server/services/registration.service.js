@@ -3,12 +3,10 @@ import Registration from "../models/Registration.js";
 import ApiError from "../utils/ApiError.js";
 import { generateOTP, saveOTP, verifyOTP, consumeVerifiedSession } from "./otp.service.js";
 import { sendMail } from "./mail.service.js";
-import { sendOtpWhatsApp } from "./whatsapp.service.js";
 import { registerStudentService } from "./student.service.js";
 import logger from "../utils/logger.js";
 
 const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
-const normalizeMobile = (mobile) => String(mobile || "").replace(/\D/g, "").slice(-10);
 const otpKey = (email) => `reg:${normalizeEmail(email)}`;
 const verifiedKey = (email) => `reg-verified:${normalizeEmail(email)}`;
 
@@ -24,16 +22,9 @@ const otpEmailHtml = (otp) =>
     <p>— Rurally Smile Foundation</p>
   </div>`;
 
-export const sendRegistrationOtp = async (
-  emailInput,
-  mobileInput,
-  options = {}
-) => {
+/** Gmail-only OTP. On Render free, live site uses Vercel `/api/v1/registration/send-otp`. */
+export const sendRegistrationOtp = async (emailInput) => {
   const email = normalizeEmail(emailInput);
-  const mobile = normalizeMobile(mobileInput);
-  const prepareOnly = Boolean(options.prepareOnly);
-  const relayOk = Boolean(options.relayAuthenticated);
-
   if (!isValidEmail(email)) {
     throw new ApiError(400, "Enter a valid email address");
   }
@@ -43,22 +34,6 @@ export const sendRegistrationOtp = async (
 
   const otp = generateOTP();
 
-  // Trusted Vercel relay: store OTP only; Vercel sends the email (SMTP works there)
-  if (prepareOnly && relayOk) {
-    await saveOTP(otpKey(email), otp);
-    return {
-      email,
-      channel: "pending",
-      relayOtp: otp,
-      expiresIn: 300,
-      message: "OTP prepared for email relay",
-    };
-  }
-
-  let channel = null;
-  let lastError = null;
-
-  // 1) Email via Resend HTTPS (preferred on Render) or SMTP (local / paid)
   try {
     const delivery = await sendMail(
       email,
@@ -66,42 +41,19 @@ export const sendRegistrationOtp = async (
       otpEmailHtml(otp)
     );
     if (delivery?.skipped) {
-      lastError = new Error(
-        delivery.reason === "smtp_not_configured"
-          ? "Email not configured"
-          : "Email skipped"
+      throw new ApiError(
+        503,
+        "Gmail is not configured. Set EMAIL and EMAIL_PASSWORD."
       );
-    } else {
-      channel = "email";
     }
   } catch (err) {
-    lastError = err;
+    if (err instanceof ApiError) throw err;
     logger.error(`Registration OTP email failed for ${email}: ${err.message}`);
-  }
-
-  // 2) Render free blocks SMTP — fall back to Twilio SMS/WhatsApp (HTTPS)
-  if (!channel && /^[6-9]\d{9}$/.test(mobile)) {
-    try {
-      const sms = await sendOtpWhatsApp(mobile, otp);
-      if (!sms?.skipped) {
-        channel = "sms";
-        logger.info(`Registration OTP for ${email} delivered via SMS to ${mobile}`);
-      } else {
-        lastError = new Error(sms?.error || "SMS/WhatsApp not configured");
-      }
-    } catch (err) {
-      lastError = err;
-      logger.error(`Registration OTP SMS failed for ${mobile}: ${err.message}`);
-    }
-  }
-
-  if (!channel) {
-    const smtpBlocked = Boolean(lastError?.isSmtpBlocked);
     throw new ApiError(
-      smtpBlocked ? 502 : 503,
-      smtpBlocked
-        ? "Email SMTP is blocked on Render free tier. Add RESEND_API_KEY (HTTPS) or ensure Twilio SMS is configured, then retry."
-        : "OTP could not be sent. Configure RESEND_API_KEY or Twilio SMS on Render."
+      502,
+      process.env.RENDER
+        ? "Gmail SMTP is blocked on Render free. OTP is sent from Vercel — set EMAIL, EMAIL_PASSWORD, MONGO_URI on Vercel."
+        : "OTP email could not be sent. Check Gmail EMAIL / EMAIL_PASSWORD (App Password)."
     );
   }
 
@@ -109,17 +61,14 @@ export const sendRegistrationOtp = async (
 
   const payload = {
     email,
-    channel,
+    channel: "email",
     expiresIn: 300,
-    message:
-      channel === "email"
-        ? "OTP sent to your email"
-        : "OTP sent to your mobile (email delivery unavailable on server)",
+    message: "OTP sent to your email",
   };
 
   if (process.env.NODE_ENV !== "production") {
     payload.devOtp = otp;
-    logger.info(`[DEV] Registration OTP for ${email}: ${otp} (${channel})`);
+    logger.info(`[DEV] Registration OTP for ${email}: ${otp}`);
   }
 
   return payload;

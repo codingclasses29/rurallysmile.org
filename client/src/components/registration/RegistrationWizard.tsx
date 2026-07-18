@@ -182,18 +182,14 @@ export function RegistrationWizard() {
     setOtpError("");
     try {
       const email = methods.getValues("email");
-      const mobile = methods.getValues("mobile");
       if (!email?.trim()) {
         throw new Error("Email required — go back to Contact step");
       }
-      const res = await registrationService.sendOtp(
-        email.trim(),
-        mobile?.trim()
-      );
+      const res = await registrationService.sendOtp(email.trim());
       setOtpSent(true);
       cooldown.start();
       if (res.data?.devOtp) setDevOtp(res.data.devOtp);
-      notify.success(res.message || "OTP sent");
+      notify.success(res.message || "OTP sent to email");
     } catch (err) {
       const message = errMessage(err, "OTP send failed");
       setError(message);
