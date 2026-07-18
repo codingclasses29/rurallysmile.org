@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 import type { AuthUser, UserRole } from "@/types";
 import { authService } from "@/services/auth.service";
 
@@ -37,6 +38,7 @@ function normalizeUser(data: unknown): AuthUser | null {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
@@ -63,8 +65,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const isAdminRoute = pathname?.startsWith("/admin");
+    const isAdminLogin = pathname?.startsWith("/admin/login");
+
+    if (!isAdminRoute || isAdminLogin) {
+      setUser(null);
+      setRole(null);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
     void refresh();
-  }, [refresh]);
+  }, [pathname, refresh]);
 
   const login = useCallback(async (payload: { email: string; password: string }) => {
     const res = await authService.login(payload);

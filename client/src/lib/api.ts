@@ -4,7 +4,7 @@ import axios from "axios";
  * Prefer an explicit API origin from env, but ignore broken values injected by
  * deployment config and fall back to known-safe origins.
  */
-const PROD_API_ORIGIN = "https://rurallysmile-org-1.onrender.com/api/v1";
+const PROD_API_ORIGIN = "https://rurallysmile-org-1.onrender.com/";
 const LOCAL_API_ORIGIN = "http://localhost:5000/api/v1";
 
 function normalizeApiBase(value?: string | null) {
