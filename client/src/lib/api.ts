@@ -5,9 +5,6 @@ import axios from "axios";
  * Server components / SSR: hit Express directly.
  */
 function resolveApiBase() {
-  if (typeof window !== "undefined") {
-    return "/api/v1";
-  }
   if (process.env.NEXT_PUBLIC_API_URL) {
     return process.env.NEXT_PUBLIC_API_URL;
   }
