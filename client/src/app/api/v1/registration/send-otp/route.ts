@@ -16,16 +16,50 @@ const EMAIL_PASS =
   process.env.SMTP_PASS ||
   "";
 const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI || "";
+const GMAIL_WEBAPP_URL = (process.env.GMAIL_WEBAPP_URL || "").trim();
+const GMAIL_WEBAPP_SECRET = (process.env.GMAIL_WEBAPP_SECRET || "").trim();
 
 function generateOtp() {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-async function sendOtpEmail(to: string, otp: string) {
+function otpHtml(otp: string) {
+  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
+    <h2 style="color:#0F172A">Email OTP Verification</h2>
+    <p>प्रतिभा खोज प्रतियोगिता 2026 पंजीकरण के लिए आपका OTP:</p>
+    <p style="font-size:28px;font-weight:700;letter-spacing:6px;color:#2563EB">${otp}</p>
+    <p>यह OTP <strong>5 मिनट</strong> तक मान्य है। किसी के साथ साझा न करें।</p>
+    <p>— Rurally Smile Foundation</p>
+  </div>`;
+}
+
+/** Preferred on Vercel/Render free — HTTPS to Google Apps Script (GmailApp). */
+async function sendViaGmailWebApp(to: string, otp: string) {
+  if (!GMAIL_WEBAPP_URL || !GMAIL_WEBAPP_SECRET) return null;
+
+  const res = await fetch(GMAIL_WEBAPP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      secret: GMAIL_WEBAPP_SECRET,
+      to,
+      subject: "OTP Verification – Pratibha Khoj 2026",
+      text: `Your OTP is ${otp}. Valid for 5 minutes.`,
+      html: otpHtml(otp),
+    }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || `Gmail webapp error ${res.status}`);
+  }
+  return { transport: "gmail-webapp" as const, id: "webapp" };
+}
+
+/** Local / paid hosts only — Vercel & Render free usually block SMTP. */
+async function sendViaSmtp(to: string, otp: string) {
   if (!EMAIL_USER || !EMAIL_PASS) {
-    throw new Error(
-      "EMAIL/EMAIL_PASSWORD missing on Vercel. Add Gmail app password in Project → Settings → Environment Variables."
-    );
+    throw new Error("EMAIL/EMAIL_PASSWORD missing");
   }
 
   const transporter = nodemailer.createTransport({
@@ -33,9 +67,9 @@ async function sendOtpEmail(to: string, otp: string) {
     port: 587,
     secure: false,
     requireTLS: true,
-    connectionTimeout: 12_000,
-    greetingTimeout: 10_000,
-    socketTimeout: 20_000,
+    connectionTimeout: 8_000,
+    greetingTimeout: 8_000,
+    socketTimeout: 12_000,
     auth: { user: EMAIL_USER, pass: EMAIL_PASS },
   });
 
@@ -43,25 +77,38 @@ async function sendOtpEmail(to: string, otp: string) {
     from: `"Pratibha Khoj 2026" <${EMAIL_USER}>`,
     to,
     subject: "OTP Verification – Pratibha Khoj 2026",
-    html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
-      <h2 style="color:#0F172A">Email OTP Verification</h2>
-      <p>प्रतिभा खोज प्रतियोगिता 2026 पंजीकरण के लिए आपका OTP:</p>
-      <p style="font-size:28px;font-weight:700;letter-spacing:6px;color:#2563EB">${otp}</p>
-      <p>यह OTP <strong>5 मिनट</strong> तक मान्य है। किसी के साथ साझा न करें।</p>
-      <p>— Rurally Smile Foundation</p>
-    </div>`,
+    text: `Your OTP is ${otp}. Valid for 5 minutes.`,
+    html: otpHtml(otp),
   });
 
-  return info.messageId;
+  if (info.rejected?.length) {
+    throw new Error(`Gmail rejected: ${info.rejected.join(", ")}`);
+  }
+
+  return { transport: "smtp" as const, id: info.messageId };
+}
+
+async function sendOtpEmail(to: string, otp: string) {
+  const viaWebApp = await sendViaGmailWebApp(to, otp);
+  if (viaWebApp) return viaWebApp;
+
+  try {
+    return await sendViaSmtp(to, otp);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new Error(
+      `Student email pe OTP nahi bhej paye (${msg}). ` +
+        `Vercel/Render free SMTP block karte hain — Google Apps Script setup karein ` +
+        `(server/scripts/gmail-otp-webapp.gs) aur GMAIL_WEBAPP_URL + GMAIL_WEBAPP_SECRET set karein.`
+    );
+  }
 }
 
 async function withMongo<T>(
   fn: (db: ReturnType<MongoClient["db"]>) => Promise<T>
 ) {
   if (!MONGO_URI) {
-    throw new Error(
-      "MONGO_URI missing on Vercel. Add the same MongoDB URI used by the API."
-    );
+    throw new Error("MONGO_URI missing on Vercel");
   }
   const client = new MongoClient(MONGO_URI);
   await client.connect();
@@ -73,9 +120,8 @@ async function withMongo<T>(
 }
 
 /**
- * Self-contained OTP on Vercel:
- * 1) Store OTP in Mongo (same collection Render verify reads)
- * 2) Send email via Gmail SMTP from Vercel (Render free blocks SMTP)
+ * Registration OTP → student's email via Gmail.
+ * Production: Google Apps Script (HTTPS). Local: Gmail SMTP.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -98,9 +144,6 @@ export async function POST(request: NextRequest) {
     const key = `reg:${email}`;
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
-    // Send Gmail first — only store OTP if mail is accepted
-    const messageId = await sendOtpEmail(email, otp);
-
     await withMongo(async (db) => {
       const existing = await db.collection("students").findOne({ email });
       if (existing) {
@@ -108,7 +151,11 @@ export async function POST(request: NextRequest) {
         (err as Error & { status: number }).status = 409;
         throw err;
       }
+    });
 
+    const delivery = await sendOtpEmail(email, otp);
+
+    await withMongo(async (db) => {
       await db.collection("otps").updateOne(
         { key },
         {
@@ -126,14 +173,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "OTP sent to your email — Inbox/Spam दोनों चेक करें (from codingclasses29@gmail.com)",
+      message: `OTP sent to ${email}`,
       data: {
         email,
         channel: "email",
         expiresIn: 300,
+        transport: delivery.transport,
       },
       errors: null,
-      meta: { messageId },
     });
   } catch (err) {
     const status =
