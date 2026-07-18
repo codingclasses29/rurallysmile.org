@@ -5,6 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { ToastProvider, notify } from "@/components/ui/toast/Toast";
 import { authService } from "@/services/auth.service";
 
+function resolveNextPath(next: string | null) {
+  if (!next) return "/admin/dashboard";
+  if (!next.startsWith("/admin")) return "/admin/dashboard";
+  if (/\s|`/.test(next)) return "/admin/dashboard";
+  return next;
+}
+
 function LoginForm() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -18,10 +25,7 @@ function LoginForm() {
       const res = await authService.login({ email, password });
       if (res.success) {
         notify.loginSuccess();
-        const next = searchParams.get("next") || "/admin/dashboard";
-        window.location.href = next.startsWith("/admin")
-          ? next
-          : "/admin/dashboard";
+        window.location.href = resolveNextPath(searchParams.get("next"));
       } else {
         notify.error(res.message || "Login failed");
       }
