@@ -98,6 +98,9 @@ export async function POST(request: NextRequest) {
     const key = `reg:${email}`;
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
+    // Send Gmail first — only store OTP if mail is accepted
+    const messageId = await sendOtpEmail(email, otp);
+
     await withMongo(async (db) => {
       const existing = await db.collection("students").findOne({ email });
       if (existing) {
@@ -121,16 +124,13 @@ export async function POST(request: NextRequest) {
       );
     });
 
-    const messageId = await sendOtpEmail(email, otp);
-
     return NextResponse.json({
       success: true,
-      message: "OTP sent to your email",
+      message: "OTP sent to your email — Inbox/Spam दोनों चेक करें (from codingclasses29@gmail.com)",
       data: {
         email,
         channel: "email",
         expiresIn: 300,
-        ...(process.env.NODE_ENV !== "production" ? { devOtp: otp } : {}),
       },
       errors: null,
       meta: { messageId },

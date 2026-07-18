@@ -7,12 +7,7 @@ export const sendOtpValidator = [
     .withMessage("Email is required")
     .isEmail()
     .withMessage("Enter a valid email address")
-    .normalizeEmail(),
-  body("mobile")
-    .optional({ checkFalsy: true })
-    .trim()
-    .matches(/^[6-9]\d{9}$/)
-    .withMessage("Enter valid 10-digit mobile"),
+    .customSanitizer((v) => String(v || "").trim().toLowerCase()),
 ];
 
 export const verifyOtpValidator = [
@@ -22,7 +17,7 @@ export const verifyOtpValidator = [
     .withMessage("Email is required")
     .isEmail()
     .withMessage("Enter a valid email address")
-    .normalizeEmail(),
+    .customSanitizer((v) => String(v || "").trim().toLowerCase()),
   body("otp").trim().isLength({ min: 4, max: 8 }).withMessage("Enter valid OTP"),
 ];
 
@@ -69,7 +64,7 @@ export const publicRegistrationValidator = [
     .withMessage("Email is required for OTP verification")
     .isEmail()
     .withMessage("Enter valid email")
-    .normalizeEmail(),
+    .customSanitizer((v) => String(v || "").trim().toLowerCase()),
   body("otp").trim().notEmpty().withMessage("OTP is required"),
 ];
 
