@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import api, { buildApiUrl } from "@/lib/api";
 import type { ApiResponse } from "@/types";
 
 export type AdminStudent = {
@@ -541,13 +541,14 @@ export const adminService = {
     return data;
   },
 
-  sampleResultExcelUrl: () => "/api/v1/result/import/sample",
-  sampleStudentExcelUrl: () => "/api/v1/student/import/sample",
-  sampleStudentMediaUrl: () => "/api/v1/student/import/media-sample",
+  sampleResultExcelUrl: () => buildApiUrl("/result/import/sample"),
+  sampleStudentExcelUrl: () => buildApiUrl("/student/import/sample"),
+  sampleStudentMediaUrl: () => buildApiUrl("/student/import/media-sample"),
 
-  admitPdfUrl: (id: string) => `/api/v1/admit/download/${id}`,
+  admitPdfUrl: (id: string) => buildApiUrl(`/admit/download/${id}`),
 
-  marksheetPdfUrl: (id: string) => `/api/v1/marksheet/admin/download/${id}`,
+  marksheetPdfUrl: (id: string) =>
+    buildApiUrl(`/marksheet/admin/download/${id}`),
 
   fetchPdfBlobUrl: async (path: string) => {
     const res = await api.get(path, { responseType: "blob" });

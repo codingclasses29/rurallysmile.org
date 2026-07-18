@@ -183,6 +183,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const isLogin = pathname?.includes("/admin/login");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [authChecking, setAuthChecking] = useState(!isLogin);
   const currentSearch = searchParams?.toString()
     ? `?${searchParams.toString()}`
     : "";
@@ -201,8 +202,56 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
     };
   }, [sidebarOpen]);
 
+  useEffect(() => {
+    if (isLogin) {
+      setAuthChecking(false);
+      return;
+    }
+
+    let active = true;
+
+    const verifySession = async () => {
+      try {
+        const res = await authService.profile();
+        if (!res?.success && active) {
+          const next = pathname ? `${pathname}${currentSearch}` : "/admin/dashboard";
+          router.replace(`/admin/login?next=${encodeURIComponent(next)}`);
+          return;
+        }
+        if (active) {
+          setAuthChecking(false);
+        }
+      } catch {
+        if (active) {
+          const next = pathname ? `${pathname}${currentSearch}` : "/admin/dashboard";
+          router.replace(`/admin/login?next=${encodeURIComponent(next)}`);
+        }
+      }
+    };
+
+    setAuthChecking(true);
+    void verifySession();
+
+    return () => {
+      active = false;
+    };
+  }, [isLogin, pathname, currentSearch, router]);
+
   if (isLogin) {
     return <AppProviders>{children}</AppProviders>;
+  }
+
+  if (authChecking) {
+    return (
+      <AppProviders>
+        <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+          <div className="text-center">
+            <div className="spinner-border text-primary" role="status" />
+            <div className="mt-3 text-muted">Checking admin session...</div>
+          </div>
+        </div>
+      </AppProviders>
+    );
   }
 
   const logout = async () => {

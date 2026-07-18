@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import api, { buildApiUrl } from "@/lib/api";
 import type { ApiResponse } from "@/types";
 
 export type AdmitLookup = {
@@ -43,7 +43,7 @@ export const admitService = {
     return data;
   },
 
-  /** Public English PDF download URL (same-origin via Next rewrite) */
+  /** Public PDF download URL resolved against the active API origin. */
   pdfUrl: (
     registrationNo: string,
     params?: { mobile?: string; dob?: string }
@@ -52,9 +52,8 @@ export const admitService = {
     if (params?.mobile) q.set("mobile", params.mobile);
     if (params?.dob) q.set("dob", params.dob);
     const qs = q.toString();
-    return `/api/v1/admit/pdf/${encodeURIComponent(registrationNo)}${
-      qs ? `?${qs}` : ""
-    }`;
+    const path = `/admit/pdf/${encodeURIComponent(registrationNo)}`;
+    return `${buildApiUrl(path)}${qs ? `?${qs}` : ""}`;
   },
 
   downloadPdf: async (

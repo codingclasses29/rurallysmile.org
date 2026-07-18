@@ -1,20 +1,56 @@
 import axios from "axios";
 
 /**
- * Browser: same-origin `/api/v1` (Next rewrite → Express) so cookies work with middleware.
- * Server components / SSR: hit Express directly.
+ * Prefer an explicit API origin from env, but ignore broken values injected by
+ * deployment config and fall back to known-safe origins.
  */
-function resolveApiBase() {
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
+const PROD_API_ORIGIN = "https://https-api-rurallysmile-org.onrender.com/api/v1";
+const LOCAL_API_ORIGIN = "http://localhost:5000/api/v1";
+
+function normalizeApiBase(value?: string | null) {
+  const raw = value?.trim();
+  if (!raw) return null;
+  if (!/^https?:\/\//i.test(raw)) return null;
+
+  try {
+    const url = new URL(raw);
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return null;
   }
-  const proxy = process.env.API_PROXY_TARGET?.replace(/\/$/, "");
-  if (proxy) return `${proxy}/api/v1`;
-  return "http://localhost:5000/api/v1";
+}
+
+function resolveApiBase() {
+  const publicApi = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
+  if (publicApi) {
+    return publicApi;
+  }
+
+  const proxy = normalizeApiBase(process.env.API_PROXY_TARGET);
+  if (proxy) {
+    return proxy.endsWith("/api/v1") ? proxy : `${proxy}/api/v1`;
+  }
+
+  if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
+    return PROD_API_ORIGIN;
+  }
+
+  return LOCAL_API_ORIGIN;
+}
+
+const API_BASE_URL = resolveApiBase();
+
+export function getApiBaseUrl() {
+  return API_BASE_URL;
+}
+
+export function buildApiUrl(path: string) {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
 }
 
 const api = axios.create({
-  baseURL: resolveApiBase(),
+  baseURL: API_BASE_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

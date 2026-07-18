@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import api, { buildApiUrl } from "@/lib/api";
 import type { ApiResponse } from "@/types";
 
 export type RegisterResult = {
@@ -42,5 +42,7 @@ export const registrationService = {
   },
 
   receiptUrl: (registrationNumber: string) =>
-    `/api/v1/registration/receipt/${encodeURIComponent(registrationNumber)}`,
+    buildApiUrl(
+      `/registration/receipt/${encodeURIComponent(registrationNumber)}`
+    ),
 };

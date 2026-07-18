@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import api, { buildApiUrl } from "@/lib/api";
 import type { ApiResponse } from "@/types";
 
 export type MarksheetData = {
@@ -44,5 +44,6 @@ export const marksheetService = {
     return data;
   },
 
-  downloadUrl: (resultId: string) => `/api/v1/marksheet/download/${resultId}`,
+  downloadUrl: (resultId: string) =>
+    buildApiUrl(`/marksheet/download/${resultId}`),
 };
