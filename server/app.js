@@ -41,33 +41,34 @@ const envOrigins = String(config.CLIENT_URL || "")
 
 const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
-function isAllowedVercelPreview(origin) {
+function isTrustedOrigin(origin) {
   try {
     const { hostname, protocol } = new URL(origin);
-    if (protocol !== "https:") return false;
-    return (
-      hostname.endsWith(".vercel.app") &&
-      (hostname.startsWith("rurallysmile-") || hostname === "rurallysmile-org.vercel.app")
-    );
+    if (allowedOrigins.includes(origin)) return true;
+    if (protocol === "https:" && hostname.endsWith(".vercel.app")) return true;
+    if (protocol === "http:" && hostname === "localhost") return true;
+    if (protocol === "http:" && hostname === "127.0.0.1") return true;
+    return false;
   } catch {
     return false;
   }
 }
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      // Allow non-browser / same-origin tools (no Origin header)
-      if (!origin || allowedOrigins.includes(origin) || isAllowedVercelPreview(origin)) {
-        return callback(null, origin || allowedOrigins[0]);
-      }
-      return callback(new Error(`CORS blocked for origin: ${origin}`));
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions = {
+  origin(origin, callback) {
+    // Allow server-to-server requests and reflect trusted browser origins.
+    if (!origin) return callback(null, true);
+    if (isTrustedOrigin(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(
   helmet({
