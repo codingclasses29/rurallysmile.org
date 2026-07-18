@@ -27,39 +27,11 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const defaultOrigins = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://127.0.0.1:3000",
-  "http://127.0.0.1:3001",
-];
-
-const envOrigins = String(config.CLIENT_URL || "")
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
-
-function isTrustedOrigin(origin) {
-  try {
-    const { hostname, protocol } = new URL(origin);
-    if (allowedOrigins.includes(origin)) return true;
-    if (protocol === "https:" && hostname.endsWith(".vercel.app")) return true;
-    if (protocol === "http:" && hostname === "localhost") return true;
-    if (protocol === "http:" && hostname === "127.0.0.1") return true;
-    return false;
-  } catch {
-    return false;
-  }
-}
-
 const corsOptions = {
   origin(origin, callback) {
-    // Allow server-to-server requests and reflect trusted browser origins.
-    if (!origin) return callback(null, true);
-    if (isTrustedOrigin(origin)) return callback(null, true);
-    return callback(new Error(`CORS blocked for origin: ${origin}`));
+    // Temporarily reflect any browser origin so Vercel previews and the
+    // production frontend can talk to Render without manual allowlist drift.
+    callback(null, origin || true);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -69,6 +41,12 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
+app.use((req, _res, next) => {
+  console.log("Method:", req.method);
+  console.log("Origin:", req.headers.origin);
+  console.log("Path:", req.originalUrl);
+  next();
+});
 
 app.use(
   helmet({
