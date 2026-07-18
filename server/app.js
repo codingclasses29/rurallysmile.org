@@ -41,11 +41,24 @@ const envOrigins = String(config.CLIENT_URL || "")
 
 const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
+function isAllowedVercelPreview(origin) {
+  try {
+    const { hostname, protocol } = new URL(origin);
+    if (protocol !== "https:") return false;
+    return (
+      hostname.endsWith(".vercel.app") &&
+      (hostname.startsWith("rurallysmile-") || hostname === "rurallysmile-org.vercel.app")
+    );
+  } catch {
+    return false;
+  }
+}
+
 app.use(
   cors({
     origin(origin, callback) {
       // Allow non-browser / same-origin tools (no Origin header)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin) || isAllowedVercelPreview(origin)) {
         return callback(null, origin || allowedOrigins[0]);
       }
       return callback(new Error(`CORS blocked for origin: ${origin}`));
