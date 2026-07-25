@@ -7,6 +7,7 @@ import {
   deleteStudent,
   searchStudents,
   restoreStudent,
+  replaceStudentMedia,
   downloadStudentImportSample,
   previewStudentImport,
   executeStudentImport,
@@ -87,6 +88,14 @@ router.put(
   protect,
   authorize("SUPER_ADMIN", "ADMIN"),
   restoreStudent
+);
+
+router.put(
+  "/:id/media",
+  protect,
+  authorize("SUPER_ADMIN", "ADMIN"),
+  uploadStudentDocs,
+  replaceStudentMedia
 );
 
 router.put(

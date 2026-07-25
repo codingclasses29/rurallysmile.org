@@ -9,7 +9,12 @@
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
     "install:all": "npm install && npm --prefix client install && npm --prefix server install",
-    "postinstall": "npm --prefix client install"
+    "postinstall": "npm --prefix client install",
+    "android:init": "npm --prefix android-twa run init",
+    "android:build": "npm --prefix android-twa run build",
+    "android:fingerprint": "npm --prefix android-twa run fingerprint",
+    "android:verify": "npm --prefix android-twa run verify",
+    "android:verify:prod": "npm --prefix android-twa run verify:prod"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

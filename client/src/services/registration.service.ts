@@ -34,7 +34,16 @@ export const registrationService = {
       message: string;
       data: RegisterResult;
     }>("/registration", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      // Let the browser set multipart boundary — do not force Content-Type
+      headers: { "Content-Type": undefined as unknown as string },
+      transformRequest: [
+        (body, headers) => {
+          if (headers && typeof headers === "object") {
+            delete (headers as Record<string, unknown>)["Content-Type"];
+          }
+          return body;
+        },
+      ],
     });
     return data;
   },

@@ -340,6 +340,25 @@ export const updateStudentFields = async (studentId, body) => {
   return student;
 };
 
+export const replaceStudentMedia = async (studentId, files = {}) => {
+  const student = await Student.findById(studentId);
+  if (!student) throw new ApiError(404, "Student not found");
+
+  if (files.photo?.[0]) {
+    assertFileSize(files.photo[0], MAX_PHOTO, "Photo");
+    const uploaded = await uploadImage(files.photo[0], "examportal/students");
+    student.photo = uploaded.secure_url;
+  }
+  if (files.signature?.[0]) {
+    assertFileSize(files.signature[0], MAX_SIGNATURE, "Signature");
+    const uploaded = await uploadImage(files.signature[0], "examportal/students");
+    student.signature = uploaded.secure_url;
+  }
+
+  await student.save();
+  return student;
+};
+
 export const hardDeleteStudent = async (studentId) => {
   const student = await Student.findById(studentId);
   if (!student) throw new ApiError(404, "Student not found");

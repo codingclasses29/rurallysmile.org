@@ -1,0 +1,14 @@
+{
+  "name": "pratibha-khoj-android-twa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Trusted Web Activity wrapper for Pratibha Khoj (Play Store AAB)",
+  "scripts": {
+    "init": "npx --yes @bubblewrap/cli init --manifest=https://rurallysmile-org.vercel.app/manifest.webmanifest --directory=./generated",
+    "update": "npx --yes @bubblewrap/cli update --directory=./generated",
+    "build": "npx --yes @bubblewrap/cli build --directory=./generated",
+    "fingerprint": "npx --yes @bubblewrap/cli fingerprint --directory=./generated",
+    "verify": "node ./verify-pwa.mjs",
+    "verify:prod": "node ./verify-pwa.mjs https://rurallysmile-org.vercel.app"
+  }
+}

@@ -432,17 +432,19 @@
   }
 
   @page {
-    size: A4 portrait;
+    size: 210mm 330mm;
     margin: 0;
   }
 
   .admit-card-a4,
-  .marksheet-doc-sheet {
+  .admit-card-f4,
+  .marksheet-doc-sheet,
+  .marksheet-doc-f4 {
     width: 210mm !important;
     max-width: 210mm !important;
     min-height: 0 !important;
-    height: 296mm !important;
-    max-height: 296mm !important;
+    height: 330mm !important;
+    max-height: 330mm !important;
     margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
@@ -479,36 +481,32 @@
   z-index: 1;
 }
 
-/* On-screen A4 preview for admit card */
-.admit-card-a4 {
+/* On-screen F4 preview (210×330mm) for admit card + marksheet */
+.admit-card-a4,
+.admit-card-f4,
+.marksheet-doc-sheet,
+.marksheet-doc-f4 {
   width: 100%;
   max-width: 210mm;
-  min-height: 260mm;
+  min-height: 300mm;
   margin-left: auto;
   margin-right: auto;
   background: #fff;
   box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
-  border: 1px solid #b9dfdb;
-  border-radius: 0.75rem;
+  border: 2px solid #0f766e;
+  border-radius: 0.5rem;
   overflow: hidden;
 }
 
-.marksheet-doc-sheet {
-  width: 100%;
-  max-width: 210mm;
-  min-height: 260mm;
-  margin-left: auto;
-  margin-right: auto;
-  background: #fff;
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
-  border: 1px solid #b9dfdb;
-  border-radius: 0.75rem;
-  overflow: hidden;
+.doc-f4-inner {
+  padding: 14px 16px 12px;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
 .marksheet-document-content {
   position: static !important;
-  padding-bottom: 24mm !important;
+  padding-bottom: 12mm !important;
 }
 
 .marksheet-document-footer {

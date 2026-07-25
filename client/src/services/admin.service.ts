@@ -148,6 +148,8 @@ export type ResultRow = {
   grade?: string;
   status?: string;
   published?: boolean;
+  updatedAt?: string;
+  createdAt?: string;
 };
 
 export type AdmitCardRow = {
@@ -244,6 +246,27 @@ export const adminService = {
   restoreStudent: async (id: string) => {
     const { data } = await api.put<ApiResponse<{ student: AdminStudent }>>(
       `/student/${id}/restore`
+    );
+    return data;
+  },
+
+  replaceStudentMedia: async (id: string, files: { photo?: File; signature?: File }) => {
+    const form = new FormData();
+    if (files.photo) form.append("photo", files.photo);
+    if (files.signature) form.append("signature", files.signature);
+    const { data } = await api.put<ApiResponse<{ student: AdminStudent }>>(
+      `/student/${id}/media`,
+      form,
+      {
+        transformRequest: [
+          (body, headers) => {
+            if (headers && typeof headers === "object") {
+              delete (headers as Record<string, unknown>)["Content-Type"];
+            }
+            return body;
+          },
+        ],
+      }
     );
     return data;
   },

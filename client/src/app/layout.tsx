@@ -1,7 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Poppins, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { BootstrapClient } from "@/components/BootstrapClient";
+import { PwaRegister } from "@/components/PwaRegister";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://rurallysmile-org.vercel.app";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,15 +27,27 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.rurallysmile.org"
-  ),
+  metadataBase: new URL(SITE_URL),
+  applicationName: "Pratibha Khoj",
   title: {
     default: "Pratibha Khoj Competition 2026 | Rurally Smile Foundation",
     template: "%s | Pratibha Khoj 2026",
   },
   description:
     "Official Online Exam Portal for Pratibha Khoj Competition 2026 by Rurally Smile Foundation. Register, download admit card, and check results. Exam centre: Utkramit Uchch Vidyalaya, Ratnpura, Siwan, Bihar.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Pratibha Khoj",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
   alternates: {
     canonical: "/",
   },
@@ -41,6 +57,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "hi_IN",
     siteName: "Rurally Smile Foundation",
+    url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
@@ -50,6 +67,14 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F766E",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -65,6 +90,7 @@ export default function RootLayout({
     >
       <body className="font-body">
         <BootstrapClient />
+        <PwaRegister />
         {children}
       </body>
     </html>

@@ -1,4 +1,5 @@
 .netlify/
+.vercel/
 node_modules/
 client/node_modules/
 server/node_modules/
@@ -9,3 +10,7 @@ client/.env.local
 server/logs/
 server/uploads/
 *.log
+*.keystore
+*.jks
+android-twa/generated/
+android-twa/android.keystore

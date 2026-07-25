@@ -44,6 +44,16 @@ export const updateStudent = asyncHandler(async (req, res) => {
   sendSuccess(res, 200, "Student updated", { student });
 });
 
+/** Re-upload photo/signature when Cloudinary file was corrupted */
+export const replaceStudentMedia = asyncHandler(async (req, res) => {
+  const files = req.files || {};
+  if (!files.photo?.[0] && !files.signature?.[0]) {
+    throw new ApiError(400, "Provide photo and/or signature file");
+  }
+  const student = await studentService.replaceStudentMedia(req.params.id, files);
+  sendSuccess(res, 200, "Student media updated", { student });
+});
+
 export const deleteStudent = asyncHandler(async (req, res) => {
   const report = await studentService.hardDeleteStudent(req.params.id);
   sendSuccess(res, 200, "Student and dependent records deleted", { report });

@@ -1,0 +1,21 @@
+# Generated Bubblewrap project (local only)
+generated/
+app/
+
+# Signing materials — never commit
+*.keystore
+*.jks
+*.keystore.properties
+key.properties
+android.keystore
+signing.properties
+
+# Build / IDE
+.gradle/
+local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+.idea/
+*.iml

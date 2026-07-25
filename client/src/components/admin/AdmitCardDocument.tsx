@@ -2,10 +2,10 @@
 
 import {
   EXAM_INSTRUCTIONS_EN,
-  EXAM_INSTRUCTIONS_SHORT,
   SITE,
   getExamSlotForClass,
 } from "@/constants/site";
+import { StudentPhoto } from "@/components/StudentPhoto";
 import type {
   AdminStudent,
   AdmitCardRow,
@@ -34,262 +34,267 @@ function fmtDateEn(d?: string) {
   }
 }
 
-/** A4 admit card — Bootstrap 5 + logo watermark · print / PDF download A4 */
+function docId(roll?: string) {
+  const digits = String(roll || "")
+    .replace(/\D/g, "")
+    .slice(-7)
+    .padStart(7, "0");
+  return `PK2026/${digits}`;
+}
+
+/** F4 admit card preview — matches PDF template */
 export function AdmitCardDocument({ student, admit, zoom = 1 }: Props) {
   const center =
     typeof admit.examCenter === "object" && admit.examCenter
       ? (admit.examCenter as ExamCenter)
       : null;
   const centerName =
-    center?.centerName || center?.name || SITE.examCentre;
-  const centerAddress = center?.address || SITE.examCentreFull;
+    center?.centerName || center?.name || SITE.examCentreEn;
+  const centerAddress = center?.address || "Ratnpura, District Siwan (Bihar)";
   const slot = getExamSlotForClass(student.class);
+  const admitId = docId(student.rollNumber);
 
-  const rows: [string, string][] = [
-    ["Name / नाम", student.name],
-    ["Father / पिता", student.fatherName || "—"],
-    ["Class / कक्षा", String(student.class)],
-    ["Roll No. / रोल", student.rollNumber || "—"],
-    ["Reg. No. / पंजीकरण", student.registrationNumber || "—"],
-    ["School / विद्यालय", student.schoolName || "—"],
-    ["Exam Date / परीक्षा तिथि", fmtDateEn(admit.examDate)],
-    [
-      "Exam Time / परीक्षा समय",
-      `${slot.examTime} (${slot.classesLabelEn})`,
-    ],
-    [
-      "Reporting / रिपोर्टिंग",
-      `${slot.reportingTime} (${slot.classesLabelEn})`,
-    ],
-    ["Centre / केंद्र", centerName],
-    [
-      "Room / Seat · कक्ष",
-      `${admit.roomNumber || "—"} / ${admit.seatNumber || "—"}`,
-    ],
+  const infoRows: [string, string][] = [
+    ["Name", (student.name || "—").toUpperCase()],
+    ["Father's Name", (student.fatherName || "—").toUpperCase()],
+    ["Class", `${student.class} (${slot.classesLabelEn})`],
+    ["Roll No.", student.rollNumber || "—"],
+    ["Registration No.", student.registrationNumber || "—"],
+    ["School", (student.schoolName || "—").toUpperCase()],
+    ["Exam", "PRATIBHA KHOJ EXAM (COMBINED PAPER)"],
+    ["Subjects", "HINDI · MATH · GK · GS"],
+  ];
+
+  const detailBoxes = [
+    { label: "EXAM DATE", value: fmtDateEn(admit.examDate) },
+    { label: "EXAM TIME", value: slot.examTime },
+    { label: "EXAM CENTRE", value: `${centerName}\n${centerAddress}` },
+    { label: "REPORTING", value: slot.reportingTime },
   ];
 
   return (
     <div
-      className="admit-card-a4 doc-with-watermark portal-doc-print"
+      className="admit-card-f4 doc-with-watermark portal-doc-print"
       style={{
         transform: `scale(${zoom})`,
         transformOrigin: "top center",
       }}
     >
-      <div
-        style={{
-          height: 6,
-          background: "linear-gradient(90deg,#0f766e,#1399a2,#f97316)",
-        }}
-      />
-
-      <div className="d-flex align-items-start justify-content-between gap-2 px-3 px-md-4 pt-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={LOGO}
-          alt="Rurally Smile Foundation"
-          className="bg-dark rounded p-1"
-          style={{ width: 120, height: "auto", objectFit: "contain" }}
-        />
-        <div className="flex-grow-1 text-center px-1">
-          <div className="fw-bold text-primary small">
-            Rurally Smile Foundation
+      <div className="doc-f4-inner">
+        <div className="d-flex align-items-start justify-content-between gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={LOGO}
+            alt="Rurally Smile Foundation"
+            className="bg-dark rounded p-1"
+            style={{ width: 72, height: "auto", objectFit: "contain" }}
+          />
+          <div className="flex-grow-1 text-center px-1">
+            <div className="fw-bold" style={{ color: "#0F766E", fontSize: 15 }}>
+              RURALLY SMILE FOUNDATION
+            </div>
+            <div className="fw-bold text-dark" style={{ fontSize: 12 }}>
+              PRATIBHA KHOJ COMPETITION 2026
+            </div>
+            <div className="mt-2">
+              <span
+                className="badge rounded-pill px-4 py-2"
+                style={{ background: "#0F766E", fontSize: 12 }}
+              >
+                ADMIT CARD
+              </span>
+            </div>
+            <div className="small text-muted mt-1">
+              (Pratibha Khoj Exam — Combined Paper)
+            </div>
           </div>
-          <div className="fw-bold text-dark" style={{ fontSize: 14 }}>
-            Pratibha Khoj Competition 2026
-          </div>
-          <div className="small text-muted">प्रतिभा खोज प्रतियोगिता 2026</div>
-          <div className="fw-bold text-success mt-1" style={{ fontSize: 16 }}>
-            ADMIT CARD / प्रवेश पत्र
-          </div>
-          <div className="badge text-bg-secondary mt-1">A4 Print / Download</div>
-        </div>
-        <div className="text-center" style={{ width: 88 }}>
-          <div
-            className="border border-info border-2 d-flex align-items-center justify-content-center bg-white mx-auto rounded"
-            style={{ width: 72, height: 72 }}
-          >
-            <i className="bi bi-qr-code fs-1 text-primary" />
-          </div>
-          <div
-            className="small font-monospace mt-1 text-muted"
-            style={{ fontSize: 9 }}
-          >
-            {student.registrationNumber}
+          <div className="text-end" style={{ minWidth: 110 }}>
+            <div className="small text-muted" style={{ fontSize: 10 }}>
+              ADMIT CARD ID
+            </div>
+            <div className="fw-bold text-danger font-monospace small">
+              {admitId}
+            </div>
           </div>
         </div>
-      </div>
 
-      <hr className="mx-3 my-2 border-primary opacity-100" />
+        <hr className="my-2 border-success opacity-50" />
 
-      <div className="px-3 px-md-4 pb-4">
-        <div className="row g-3 mb-3">
+        <div className="row g-3 mb-2">
           <div className="col">
             <table className="table table-sm table-borderless mb-0 small">
               <tbody>
-                {rows.map(([k, v]) => (
+                {infoRows.map(([k, v]) => (
                   <tr key={k}>
-                    <th
-                      className="text-muted fw-semibold text-nowrap pe-2"
-                      style={{ width: "42%" }}
-                    >
-                      {k}
+                    <th className="text-muted fw-semibold pe-2" style={{ width: "34%" }}>
+                      {k}:
                     </th>
-                    <td className="fw-semibold font-monospace text-dark">{v}</td>
+                    <td className="fw-semibold">{v}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <div className="col-auto text-center">
+            <StudentPhoto
+              src={student.photo}
+              width={88}
+              height={108}
+              className="mx-auto mb-2 rounded-0"
+            />
             <div
-              className="border border-2 border-primary-subtle bg-light mx-auto overflow-hidden rounded mb-2"
-              style={{ width: 78, height: 95 }}
+              className="border border-2 border-info d-flex align-items-center justify-content-center bg-white mx-auto"
+              style={{ width: 72, height: 72 }}
             >
-              {student.photo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={student.photo}
-                  alt=""
-                  className="w-100 h-100"
-                  style={{ objectFit: "cover" }}
-                />
-              ) : (
-                <div className="h-100 d-flex align-items-center justify-content-center text-muted small">
-                  Photo
-                </div>
-              )}
+              <i className="bi bi-qr-code fs-1 text-primary" />
             </div>
-            <span className="badge text-bg-success">{slot.classesLabelEn}</span>
-          </div>
-        </div>
-
-        <div className="alert alert-success py-2 mb-3">
-          <strong>Your slot / आपकी समय सारिणी</strong>
-          <div className="fw-bold tabular-nums mt-1">
-            {slot.examTime} · Report {slot.reportingTime}
-          </div>
-          <div className="small mt-1">
-            Classes 7–8: 09:00–10:30 (Report 08:30) · Classes 9–10: 10:00–11:30
-            (Report 09:30)
-          </div>
-        </div>
-
-        <div className="alert alert-warning py-2 mb-3">
-          <strong>Important Instructions / महत्वपूर्ण निर्देश</strong>
-          <ol className="mb-0 mt-2 ps-3 small">
-            {EXAM_INSTRUCTIONS_SHORT.map((hi, i) => (
-              <li key={i} className="mb-2">
-                <div>{hi}</div>
-                <div className="text-muted" style={{ fontSize: 11 }}>
-                  {EXAM_INSTRUCTIONS_EN[i]}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <p className="small text-muted mb-3">{centerAddress}</p>
-
-        <div className="d-flex justify-content-between align-items-end pt-2 border-top">
-          <div className="text-center small text-muted">
-            <div
-              className="border-bottom border-dark mb-1 mx-auto"
-              style={{ width: 120, height: 28 }}
-            />
-            Candidate Signature
-          </div>
-          <div className="text-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={LOGO}
-              alt=""
-              className="bg-dark rounded p-1 mb-1"
-              style={{ height: 32, width: "auto", objectFit: "contain" }}
-            />
-            <div className="bg-dark text-white px-3 py-1 rounded font-monospace fw-bold small">
-              {student.rollNumber || student.registrationNumber}
+            <div className="small text-muted mt-1" style={{ fontSize: 9 }}>
+              Scan to Verify
             </div>
           </div>
-          <div className="text-center small text-muted">
+        </div>
+
+        <div
+          className="text-white fw-bold small px-2 py-1 mb-2"
+          style={{ background: "#0F766E" }}
+        >
+          EXAM DETAILS
+        </div>
+        <div className="row g-2 mb-2">
+          {detailBoxes.map((b) => (
+            <div className="col-6 col-md-3" key={b.label}>
+              <div
+                className="rounded-3 h-100 text-center p-2"
+                style={{
+                  border: "1px solid #99F6E4",
+                  background: "#F8FFFE",
+                  minHeight: 72,
+                }}
+              >
+                <div
+                  className="fw-bold small"
+                  style={{ color: "#0F766E", fontSize: 10 }}
+                >
+                  {b.label}
+                </div>
+                <div
+                  className="fw-semibold small mt-1"
+                  style={{ whiteSpace: "pre-line", fontSize: 11 }}
+                >
+                  {b.value}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="small text-muted fst-italic mb-2">
+          Note: Late entry may not be allowed after reporting closes. Carry Admit
+          Card + valid photo ID.
+        </p>
+
+        <div className="row g-3 mb-2">
+          <div className="col-md-7">
             <div
-              className="mb-0 mx-auto fw-semibold"
+              className="rounded-3 p-3 h-100"
+              style={{ border: "1px solid #0D9488", background: "#ECFEFF" }}
+            >
+              <div className="fw-bold small mb-2" style={{ color: "#0F766E" }}>
+                IMPORTANT INSTRUCTIONS
+              </div>
+              <ul className="small mb-0 ps-3">
+                {EXAM_INSTRUCTIONS_EN.map((line) => (
+                  <li key={line} className="mb-1">
+                    {line}
+                  </li>
+                ))}
+                <li className="mb-0">
+                  Keep the bottom portion of this admit card safe for records.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="col-md-5 text-center">
+            <div
+              className="fw-semibold mb-1"
               style={{
                 fontFamily: '"Segoe Script","Brush Script MT",cursive',
-                fontSize: 16,
+                fontSize: 18,
                 color: "#1e3a5f",
-                lineHeight: 1.1,
-                minHeight: 26,
               }}
             >
               {SITE.aboutFoundation.authorizedSignatory}
             </div>
+            <div className="fw-bold small">
+              {SITE.aboutFoundation.authorizedSignatory}
+            </div>
+            <div className="text-muted" style={{ fontSize: 11 }}>
+              Managing Director · Rurally Smile Foundation
+            </div>
             <div
-              className="border-bottom border-dark mb-1 mx-auto"
-              style={{ width: 130 }}
-            />
-            Authorized Signatory
-            <div style={{ fontSize: 10 }}>
-              {SITE.aboutFoundation.managingDirectorTitle}
-            </div>
-          </div>
-        </div>
-
-        {/* Foundation about — fills blank A4 space (rurallysmile.org) */}
-        <div
-          className="mt-3 p-3 rounded border border-primary-subtle"
-          style={{ background: "rgba(19, 153, 162, 0.06)" }}
-        >
-          <div className="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-1">
-            <div className="fw-bold text-primary small mb-0">
-              {SITE.aboutFoundation.title}
-              <span className="text-muted fw-normal ms-1">
-                / {SITE.aboutFoundation.titleHi}
-              </span>
-            </div>
-            <a
-              href={SITE.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="small fw-semibold text-decoration-none"
+              className="rounded-circle border border-2 mx-auto mt-3 d-flex align-items-center justify-content-center"
+              style={{
+                width: 72,
+                height: 72,
+                borderColor: "#0F766E",
+                color: "#0F766E",
+                fontSize: 9,
+              }}
             >
-              {SITE.website.replace(/^https?:\/\//, "")}
-            </a>
-          </div>
-          <p className="small mb-2 text-dark" style={{ lineHeight: 1.45 }}>
-            {SITE.aboutFoundation.welcome}
-          </p>
-          <p className="small mb-2 text-secondary" style={{ lineHeight: 1.4 }}>
-            <span className="fw-semibold text-dark">Our Mission: </span>
-            {SITE.aboutFoundation.missionEn}
-          </p>
-          <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 small">
-            <span className="text-muted">
-              <span className="fw-semibold text-dark">
-                {SITE.aboutFoundation.managingDirector}
-              </span>
-              {" · "}
-              {SITE.aboutFoundation.managingDirectorTitle}
-              {" · "}
-              {SITE.aboutFoundation.location}
-            </span>
-            <span className="text-primary fw-semibold">
-              Transforming Rural Areas with Joy and Quality Education
-            </span>
+              <div className="text-center fw-bold">
+                RSF
+                <br />
+                SIWAN
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="text-center small text-muted mt-3 pt-2 border-top">
-          Helpline: {SITE.phones.join(" / ")} ·{" "}
-          <a
-            href={SITE.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted"
+        <div className="position-relative text-center my-3">
+          <hr className="border-success border-dashed opacity-75" />
+          <span
+            className="position-absolute top-50 start-50 translate-middle badge rounded-pill px-3"
+            style={{ background: "#0F766E" }}
           >
-            www.rurallysmile.org
-          </a>{" "}
-          · PDF download is A4 (English)
+            KEEP THIS PORTION SAFE
+          </span>
+        </div>
+
+        <div
+          className="rounded-3 p-3 small mb-2"
+          style={{ background: "#F0FDFA", border: "1px solid #99F6E4" }}
+        >
+          <div className="row g-2">
+            <div className="col-md-6">
+              <div>
+                <strong>Name:</strong> {(student.name || "—").toUpperCase()}
+              </div>
+              <div>
+                <strong>Roll No.:</strong> {student.rollNumber || "—"}
+              </div>
+              <div>
+                <strong>Exam Date:</strong> {fmtDateEn(admit.examDate)}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div>
+                <strong>Centre:</strong> {centerName}
+              </div>
+              <div>
+                <strong>Exam:</strong> Combined Paper · Class {student.class}
+              </div>
+              <div>
+                <strong>Helpline:</strong> {SITE.phones.join(" / ")}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="text-center text-white small py-2 rounded-1"
+          style={{ background: "#0F766E" }}
+        >
+          www.rurallysmile.org · {SITE.aboutFoundation.tagline} · Siwan, Bihar ·
+          F4 Print
         </div>
       </div>
     </div>

@@ -53,7 +53,9 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
   };
 
   if (!["GET", "HEAD"].includes(request.method)) {
-    init.body = await request.text();
+    // Use binary body — request.text() UTF-8-mangles multipart photos/signatures
+    // into U+FFFD and Cloudinary then stores unusable /raw/ files.
+    init.body = Buffer.from(await request.arrayBuffer());
   }
 
   const upstream = await fetch(targetUrl, init);

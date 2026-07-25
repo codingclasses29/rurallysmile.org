@@ -27,6 +27,29 @@ export default function StudentsClient() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [bulkBusy, setBulkBusy] = useState(false);
 
+  const replacePhoto = async (id: string, file: File) => {
+    setBusyId(id);
+    try {
+      const res = await adminService.replaceStudentMedia(id, { photo: file });
+      const updated = res.data?.student;
+      if (updated) {
+        setItems((prev) =>
+          prev.map((s) => (s._id === id ? { ...s, ...updated } : s))
+        );
+      }
+      notify.success("Photo updated — re-download admit/marksheet PDF");
+    } catch (e: unknown) {
+      const msg =
+        e && typeof e === "object" && "response" in e
+          ? (e as { response?: { data?: { message?: string } } }).response?.data
+              ?.message
+          : null;
+      notify.error(msg || (e instanceof Error ? e.message : "Photo update failed"));
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   useEffect(() => {
     setStatus(searchParams.get("status") || "");
     setSearch(searchParams.get("search") || "");
@@ -409,20 +432,38 @@ export default function StudentsClient() {
                       </td>
                     )}
                     <td>
-                      {s.photo ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={s.photo}
-                          alt=""
-                          className="student-thumb"
+                      <label
+                        className="d-inline-block position-relative mb-0"
+                        title="Click to re-upload photo"
+                        style={{ cursor: "pointer" }}
+                      >
+                        {s.photo ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={s.photo}
+                            alt=""
+                            className="student-thumb"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.opacity = "0.25";
+                            }}
+                          />
+                        ) : (
+                          <div className="student-thumb d-flex align-items-center justify-content-center bg-light text-muted">
+                            PHOTO
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          className="d-none"
+                          disabled={busyId === s._id}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            e.target.value = "";
+                            if (file) void replacePhoto(s._id, file);
+                          }}
                         />
-                      ) : (
-                        <div
-                          className="student-thumb d-flex align-items-center justify-content-center bg-light text-muted"
-                        >
-                          👤
-                        </div>
-                      )}
+                      </label>
                     </td>
                     <td>
                       <div className="fw-semibold">{s.name}</div>
