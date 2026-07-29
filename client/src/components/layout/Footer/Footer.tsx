@@ -16,7 +16,7 @@ const social = [
   { Icon: FaInstagram, href: SITE.social.instagram, label: "Instagram" },
   { Icon: FaYoutube, href: SITE.social.youtube, label: "YouTube" },
   { Icon: FaTelegramPlane, href: SITE.social.telegram, label: "Telegram" },
-  { Icon: FaWhatsapp, href: SITE.social.whatsapp, label: "WhatsApp" },
+  { Icon: FaWhatsapp, href: SITE.social.whatsapp, label: "WhatsApp Channel" },
 ] as const;
 
 export function Footer() {

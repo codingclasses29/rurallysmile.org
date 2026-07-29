@@ -61,7 +61,7 @@ export const SITE = {
     instagram: "https://www.instagram.com/",
     youtube: "https://www.youtube.com/channel/UCkFeoZnvN_jNioynJL17bkw",
     telegram: "https://t.me/",
-    whatsapp: "https://wa.me/919934276672",
+    whatsapp: "https://whatsapp.com/channel/0029Vb8PWTe7IUYTy43XIa06",
   },
 } as const;
 

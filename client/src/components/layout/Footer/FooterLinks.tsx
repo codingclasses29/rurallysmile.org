@@ -72,6 +72,16 @@ export function FooterLinks() {
           </p>
           <p>
             <a
+              href={SITE.social.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
+            >
+              WhatsApp Channel — Support Team
+            </a>
+          </p>
+          <p>
+            <a
               href={`mailto:${SITE.email}`}
               className="hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-accent"
             >
