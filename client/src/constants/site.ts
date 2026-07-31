@@ -137,6 +137,11 @@ export const MAIN_NAV: NavItem[] = [
         description: "ऑनलाइन आवेदन करें",
       },
       {
+        href: "/registration/guide",
+        label: "Registration Guide",
+        description: "पंजीकरण कैसे करें — चरण गाइड",
+      },
+      {
         href: "/registration/status",
         label: "Registration Status",
         description: "आवेदन स्थिति जाँचें",
@@ -212,6 +217,11 @@ export const SEARCH_INDEX = [
     keywords: ["registration", "apply", "पंजीकरण"],
   },
   {
+    label: "Registration Guide",
+    href: "/registration/guide",
+    keywords: ["guide", "how to", "steps", "गाइड", "कैसे"],
+  },
+  {
     label: "Registration Status",
     href: "/registration/status",
     keywords: ["status", "स्थिति"],
@@ -260,6 +270,7 @@ export const HEADER_NOTIFICATIONS = [
 
 export const FOOTER_QUICK = [
   { href: "/registration", label: "Registration" },
+  { href: "/registration/guide", label: "User Guide" },
   { href: "/admit-card", label: "Admit Card" },
   { href: "/result", label: "Result" },
   { href: "/notice", label: "Notice" },

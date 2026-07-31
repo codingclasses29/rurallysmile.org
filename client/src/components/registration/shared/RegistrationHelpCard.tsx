@@ -122,6 +122,12 @@ export function RegistrationHelpCard() {
               </li>
             ))}
           </ol>
+          <a
+            href="/registration/guide"
+            className="mt-4 inline-block text-sm font-semibold text-orange-600 underline"
+          >
+            पूरा User Guide देखें →
+          </a>
         </div>
       </div>
 
