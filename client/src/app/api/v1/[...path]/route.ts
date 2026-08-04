@@ -62,11 +62,24 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
   const responseHeaders = new Headers();
 
   upstream.headers.forEach((value, key) => {
-    if (HOP_BY_HOP_RESPONSE.has(key.toLowerCase())) {
-      return;
-    }
+    const lower = key.toLowerCase();
+    if (HOP_BY_HOP_RESPONSE.has(lower)) return;
+    // set-cookie is handled below via getSetCookie() — forEach can drop duplicates
+    if (lower === "set-cookie") return;
     responseHeaders.append(key, value);
   });
+
+  const setCookies =
+    typeof upstream.headers.getSetCookie === "function"
+      ? upstream.headers.getSetCookie()
+      : [];
+  for (const cookie of setCookies) {
+    // Cookies are for the Vercel host (same-origin /api/v1), not Render.
+    responseHeaders.append(
+      "set-cookie",
+      cookie.replace(/;\s*Domain=[^;]+/i, "")
+    );
+  }
 
   const body = await upstream.arrayBuffer();
 

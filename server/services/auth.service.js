@@ -18,11 +18,14 @@ const cookieOptions = (maxAge) => ({
 });
 
 export const loginAdmin = async ({ email, password, ip, userAgent }) => {
-  const admin = await Admin.findOne({ email: email.toLowerCase() }).select("+password");
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const plainPassword = String(password ?? "");
+
+  const admin = await Admin.findOne({ email: normalizedEmail }).select("+password");
   if (!admin) throw new ApiError(404, "Admin not found");
   if (!admin.isActive) throw new ApiError(403, "Account is inactive");
 
-  const isMatch = await admin.comparePassword(password);
+  const isMatch = await admin.comparePassword(plainPassword);
   if (!isMatch) throw new ApiError(401, "Invalid Password");
 
   const accessToken = generateAccessToken(admin);
