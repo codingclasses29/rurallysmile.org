@@ -185,7 +185,7 @@ export default function RegistrationGuidePage() {
                 >
                   /registration
                 </Link>{" "}
-                खोलें
+                खोलें — पंजीकरण <strong>05 अगस्त 2026</strong> से शुरू
               </li>
               <li>नीचे दिए 8 चरण पूरे करें → Registration Number प्राप्त करें</li>
             </ol>

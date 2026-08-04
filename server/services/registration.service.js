@@ -3,7 +3,7 @@ import Registration from "../models/Registration.js";
 import ApiError from "../utils/ApiError.js";
 import { generateOTP, saveOTP, verifyOTP, consumeVerifiedSession } from "./otp.service.js";
 import { sendMail } from "./mail.service.js";
-import { registerStudentService } from "./student.service.js";
+import { registerStudentService, getSetting } from "./student.service.js";
 import logger from "../utils/logger.js";
 
 const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
@@ -83,6 +83,14 @@ export const verifyRegistrationOtpOnly = async (emailInput, otp) => {
 };
 
 export const submitRegistrationWithOtp = async (body, files) => {
+  const setting = await getSetting();
+  if (setting && setting.registrationOpen === false) {
+    throw new ApiError(
+      403,
+      "Student registration opens on 05 August 2026. Please check back on that date."
+    );
+  }
+
   const email = normalizeEmail(body.email);
   const otp = String(body.otp || "").trim();
 

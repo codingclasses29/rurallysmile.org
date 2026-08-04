@@ -40,7 +40,8 @@ export const SITE = {
   examDate: "2026-09-05T09:00:00+05:30",
   examDateLabel: "05 September 2026 (Saturday)",
   examDateLabelHindi: "05 सितम्बर 2026 (शनिवार)",
-  registrationStartLabel: "शीघ्र घोषित किया जाएगा",
+  registrationStartLabel: "05 August 2026",
+  registrationStartLabelHindi: "05 अगस्त 2026",
   lastDateLabel: "31 August 2026",
   lastDateLabelHindi: "31 अगस्त 2026",
   admitCardDateLabel: "02 September 2026",
@@ -55,7 +56,7 @@ export const SITE = {
   medium: "हिन्दी माध्यम",
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Ratnpura+Siwan+Bihar",
   announcement:
-    "प्रतिभा खोज प्रतियोगिता 2026 · पंजीकरण अंतिम तिथि 31 अगस्त 2026 · परीक्षा 05 सितम्बर 2026 · कक्षा 7–8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
+    "प्रतिभा खोज प्रतियोगिता 2026 · छात्र पंजीकरण 05 अगस्त 2026 से प्रारंभ · अंतिम तिथि 31 अगस्त 2026 · परीक्षा 05 सितम्बर 2026 · कक्षा 7–8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
   social: {
     facebook: "https://www.facebook.com/",
     instagram: "https://www.instagram.com/",
@@ -247,24 +248,24 @@ export const SEARCH_INDEX = [
 export const HEADER_NOTIFICATIONS = [
   {
     id: "1",
+    title: "Registration from 5 Aug",
+    message: "छात्र ऑनलाइन पंजीकरण 05 अगस्त 2026 से प्रारंभ होगा।",
+    href: "/registration/guide",
+    time: "Important",
+  },
+  {
+    id: "2",
     title: "Last Date 31 Aug",
     message: "ऑनलाइन पंजीकरण अंतिम तिथि 31 अगस्त 2026।",
     href: "/registration",
     time: "Important",
   },
   {
-    id: "2",
+    id: "3",
     title: "Exam 05 Sep",
     message: "कक्षा 7–8: 09:00–10:30 · कक्षा 9–10: 10:00–11:30",
     href: "/notice",
     time: "Schedule",
-  },
-  {
-    id: "3",
-    title: "Admit Card 02 Sep",
-    message: "प्रवेश पत्र 02 सितम्बर 2026 से डाउनलोड।",
-    href: "/admit-card",
-    time: "Upcoming",
   },
 ] as const;
 
@@ -288,7 +289,7 @@ export const QUICK_ACTIONS = [
   {
     href: "/registration",
     title: "Student Registration",
-    desc: "ऑनलाइन पंजीकरण करें",
+    desc: "05 अगस्त 2026 से प्रारंभ",
     icon: "📝",
     color: "bg-emerald-500",
   },
@@ -390,8 +391,8 @@ export const IMPORTANT_DATES = [
   {
     label: "Registration Start",
     labelHi: "ऑनलाइन पंजीकरण प्रारंभ",
-    date: "शीघ्र घोषित",
-    year: "किया जाएगा",
+    date: "05 अगस्त",
+    year: "2026",
   },
   {
     label: "Last Date",
@@ -462,11 +463,11 @@ export const HOME_STATS = [
 
 export const LATEST_NOTICES = [
   {
-    slug: "registration-soon",
-    title: "ऑनलाइन पंजीकरण शीघ्र प्रारम्भ",
+    slug: "registration-start-5-aug",
+    title: "छात्र पंजीकरण 05 अगस्त से प्रारंभ",
     excerpt:
-      "प्रतिभा खोज प्रतियोगिता 2026 हेतु ऑनलाइन पंजीकरण शीघ्र प्रारम्भ होगा।",
-    date: "सूचना",
+      "प्रतिभा खोज प्रतियोगिता 2026 हेतु ऑनलाइन छात्र पंजीकरण 05 अगस्त 2026 से प्रारंभ होगा। अंतिम तिथि 31 अगस्त 2026।",
+    date: "05 Aug 2026",
   },
   {
     slug: "last-date",
