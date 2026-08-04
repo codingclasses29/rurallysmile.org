@@ -23,6 +23,10 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Render / reverse proxies — required so rate-limit uses the real client IP
+// instead of counting all Vercel traffic as one address.
+app.set("trust proxy", 1);
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

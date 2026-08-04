@@ -30,11 +30,20 @@ function LoginForm() {
         notify.error(res.message || "Login failed");
       }
     } catch (err: unknown) {
-      const message =
-        typeof err === "object" && err && "message" in err
-          ? String((err as { message: string }).message)
-          : "Login failed";
-      notify.error(message);
+      const ax = err as {
+        response?: { status?: number; data?: { message?: string } };
+        message?: string;
+      };
+      const status = ax.response?.status;
+      const apiMsg = ax.response?.data?.message;
+      if (status === 429) {
+        notify.error(
+          apiMsg ||
+            "Too many requests. Please wait 5–10 minutes, then try again."
+        );
+      } else {
+        notify.error(apiMsg || ax.message || "Login failed");
+      }
     } finally {
       setLoading(false);
     }
