@@ -29,6 +29,8 @@ export const loginAdmin = async ({ email, password, ip, userAgent }) => {
   const refreshToken = generateRefreshToken(admin);
 
   admin.lastLogin = new Date();
+  // Avoid accidental password re-hash when only lastLogin changes
+  admin.markModified("lastLogin");
   await admin.save({ validateBeforeSave: false });
 
   await Log.create({
