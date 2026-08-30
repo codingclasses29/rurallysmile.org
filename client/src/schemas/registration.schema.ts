@@ -4,6 +4,7 @@ export const personalDetailsSchema = z.object({
   name: z.string().trim().min(2, "Student name is required").max(80, "Name is too long"),
   fatherName: z.string().trim().min(2, "Father name is required").max(80, "Name is too long"),
   motherName: z.string().trim().max(80).optional().or(z.literal("")),
+  dob: z.string().min(1, "Date of birth is required"),
   gender: z.string().refine((v) => ["Male", "Female", "Other"].includes(v), { message: "Gender is required" }),
 });
 export const addressDetailsSchema = z.object({
@@ -41,6 +42,6 @@ export const uploadFilesSchema = z.object({
 });
 export type UploadFilesValues = z.infer<typeof uploadFilesSchema>;
 export const registrationDefaults: RegistrationFormValues = {
-  name: "", fatherName: "", motherName: "", gender: "", state: "Bihar", district: "Siwan", block: "", village: "", pinCode: "", class: "", schoolName: "", medium: "Hindi",
+  name: "", fatherName: "", motherName: "", dob: "", gender: "", state: "Bihar", district: "Siwan", block: "", village: "", pinCode: "", class: "", schoolName: "", medium: "Hindi",
 };
 export const STEP_SCHEMAS = [personalDetailsSchema, addressDetailsSchema, schoolDetailsSchema] as const;

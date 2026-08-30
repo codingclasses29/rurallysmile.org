@@ -41,6 +41,13 @@ export function PersonalDetailsForm() {
           error={errors.motherName?.message}
           {...register("motherName")}
         />
+        <Input
+          label="Date of Birth"
+          type="date"
+          requiredMark
+          error={errors.dob?.message}
+          {...register("dob")}
+        />
         <Controller
           name="gender"
           control={control}

@@ -16,7 +16,7 @@ export function UploadStep({ files, errors, onFile }: Props) {
   return (
     <div className="space-y-5">
       <RegSectionTitle
-        title="Photo & Documents"
+        title="Photo & Signature"
         subtitle="Drag & drop files or click to browse. Preview appears instantly."
       />
       <RequiredDocsHint />

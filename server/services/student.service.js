@@ -66,6 +66,7 @@ export const registerStudentService = async (body, files = {}) => {
     name: body.name,
     fatherName: body.fatherName,
     motherName: body.motherName,
+    dob: body.dob,
     gender: body.gender,
     medium: body.medium || "Hindi",
     class: body.class,

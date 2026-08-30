@@ -13,7 +13,7 @@ export const REG_STEPS = [
   { id: 1, title: "Personal Details", short: "Personal", hindi: "Personal details" },
   { id: 2, title: "Address Details", short: "Address", hindi: "Address" },
   { id: 3, title: "School Details", short: "School", hindi: "School" },
-  { id: 4, title: "Photo & Documents", short: "Upload", hindi: "Upload" },
+  { id: 4, title: "Photo & Signature", short: "Upload", hindi: "Upload" },
   { id: 5, title: "Review", short: "Review", hindi: "Review" },
   { id: 6, title: "Complete", short: "Done", hindi: "Complete" },
 ] as const;

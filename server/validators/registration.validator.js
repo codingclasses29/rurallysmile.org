@@ -25,6 +25,7 @@ export const publicRegistrationValidator = [
   body("name").trim().notEmpty().withMessage("Student name is required"),
   body("fatherName").trim().notEmpty().withMessage("Father name is required"),
   body("motherName").optional().trim(),
+  body("dob").isISO8601().withMessage("Date of birth is required"),
   body("gender")
     .notEmpty()
     .isIn(["male", "female", "other", "Male", "Female", "Other"])

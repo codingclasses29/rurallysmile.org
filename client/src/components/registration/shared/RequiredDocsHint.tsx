@@ -12,7 +12,6 @@ export function RequiredDocsHint() {
           <ul className="mt-2 list-disc space-y-1 pl-4 text-xs sm:text-sm">
             <li>Photo: recent passport-size, clear face, JPG/PNG, max 2 MB</li>
             <li>Signature: black/blue ink on white, JPG/PNG, max 1 MB</li>
-            <li>School ID / Aadhaar: optional, JPG/PNG/PDF, max 2 MB</li>
           </ul>
         </div>
       </div>
