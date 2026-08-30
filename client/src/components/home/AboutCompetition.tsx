@@ -80,7 +80,7 @@ export function AboutCompetition() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                  Certificates, trophies & cash prizes
+                  Certificates, trophies & awards
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />

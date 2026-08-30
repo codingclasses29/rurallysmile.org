@@ -86,11 +86,11 @@ export function PrizeSection() {
         <SectionReveal>
           <div className="text-center mx-auto mb-4" style={{ maxWidth: 640 }}>
             <span className="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 mb-3">
-              Awards &amp; Cash Prizes · पुरस्कार एवं सम्मान
+              Awards &amp; Prizes · पुरस्कार एवं सम्मान
             </span>
             <h2 className="display-6 fw-bold text-dark mb-2">Awards &amp; Recognition</h2>
             <p className="text-muted mb-0">
-              Cash prizes, medals, trophies &amp; certificates for top performing students
+              Trophies, medals &amp; certificates for top performing students
             </p>
           </div>
         </SectionReveal>
