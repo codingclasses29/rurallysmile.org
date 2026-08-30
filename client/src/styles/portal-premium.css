@@ -184,6 +184,42 @@
 .portal-prize-card.is-highlight {
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.35), 0 12px 32px rgba(249, 115, 22, 0.2);
 }
+.prize-header-orange {
+  background: linear-gradient(180deg, #ff6b18 0%, #ea580c 100%) !important;
+  color: #fff;
+  border-bottom: none !important;
+  padding: 1.25rem 0.75rem !important;
+}
+.prize-header-navy {
+  background: linear-gradient(180deg, #182233 0%, #0f172a 100%) !important;
+  color: #fff;
+  border-bottom: none !important;
+  padding: 1.25rem 0.75rem !important;
+}
+.prize-header-teal {
+  background: linear-gradient(180deg, #0e7490 0%, #0f766e 100%) !important;
+  color: #fff;
+  border-bottom: none !important;
+  padding: 1.25rem 0.75rem !important;
+}
+.prize-header-green {
+  background: linear-gradient(180deg, #16a34a 0%, #15803d 100%) !important;
+  color: #fff;
+  border-bottom: none !important;
+  padding: 1.25rem 0.75rem !important;
+}
+.prize-header-cyan {
+  background: linear-gradient(180deg, #0891b2 0%, #0284c7 100%) !important;
+  color: #fff;
+  border-bottom: none !important;
+  padding: 1.25rem 0.75rem !important;
+}
+.portal-prize-amount {
+  color: #0f766e;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
 
 /* ========== EXAM CENTRE ========== */
 .portal-exam-centre-section {
