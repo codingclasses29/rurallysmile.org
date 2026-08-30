@@ -123,61 +123,12 @@ export function RegistrationWizard() {
           </Alert>
         )}
 
-        {/* Section 1: School Information */}
+        {/* Section 1: Student & Parent Details */}
         <Card className="border border-slate-200 shadow-sm dark:border-slate-800">
           <div className="mb-4 border-b border-slate-100 pb-3 dark:border-slate-800">
             <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-slate-900 dark:text-white">
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
                 1
-              </span>
-              विद्यालय एवं वर्ग विवरण (School &amp; Class)
-            </h2>
-            <p className="text-xs text-slate-500">
-              वर्तमान विद्यालय का नाम और अपनी कक्षा का चयन करें।
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <Input
-                label="1. विद्यालय का नाम (School Name)"
-                requiredMark
-                placeholder="पूरा विद्यालय का नाम (जैसा स्कूल में है)"
-                error={errors.schoolName?.message}
-                {...register("schoolName")}
-              />
-            </div>
-
-            <Controller
-              name="class"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  label="3. वर्ग (Class)"
-                  required
-                  value={field.value || ""}
-                  onChange={(v) => field.onChange(String(v))}
-                  error={errors.class?.message}
-                  options={[...CLASS_OPTIONS]}
-                />
-              )}
-            />
-
-            <Input
-              label="4. क्रमांक (School Roll No. - वैकल्पिक)"
-              placeholder="स्कूल का रोल नंबर (उदा. 15)"
-              error={errors.schoolRollNo?.message}
-              {...register("schoolRollNo")}
-            />
-          </div>
-        </Card>
-
-        {/* Section 2: Student & Parent Details */}
-        <Card className="border border-slate-200 shadow-sm dark:border-slate-800">
-          <div className="mb-4 border-b border-slate-100 pb-3 dark:border-slate-800">
-            <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-slate-900 dark:text-white">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
-                2
               </span>
               विद्यार्थी एवं अभिभावक विवरण (Student &amp; Parent Details)
             </h2>
@@ -188,7 +139,7 @@ export function RegistrationWizard() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Input
-              label="2. विद्यार्थी का नाम (Student Name)"
+              label="1. विद्यार्थी का नाम (Student Name)"
               requiredMark
               placeholder="विद्यार्थी का पूरा नाम"
               error={errors.name?.message}
@@ -211,7 +162,7 @@ export function RegistrationWizard() {
             />
 
             <Input
-              label="5. पिता का नाम (Father's Name)"
+              label="2. पिता का नाम (Father's Name)"
               requiredMark
               placeholder="पिता का पूरा नाम"
               error={errors.fatherName?.message}
@@ -219,7 +170,7 @@ export function RegistrationWizard() {
             />
 
             <Input
-              label="6. दूरभाष संख्या (Mobile Number)"
+              label="3. दूरभाष संख्या (Mobile Number)"
               requiredMark
               inputMode="numeric"
               maxLength={10}
@@ -235,7 +186,7 @@ export function RegistrationWizard() {
 
             <div className="sm:col-span-2">
               <Input
-                label="7. ग्राम + पोस्ट (Village + Post)"
+                label="4. ग्राम + पोस्ट (Village + Post)"
                 requiredMark
                 placeholder="उदा. ग्राम - रतनपुरा, पोस्ट - रतनपुरा, जिला - सीवान"
                 error={errors.villagePost?.message}
@@ -255,6 +206,55 @@ export function RegistrationWizard() {
               placeholder="माता का नाम"
               error={errors.motherName?.message}
               {...register("motherName")}
+            />
+          </div>
+        </Card>
+
+        {/* Section 2: School Information */}
+        <Card className="border border-slate-200 shadow-sm dark:border-slate-800">
+          <div className="mb-4 border-b border-slate-100 pb-3 dark:border-slate-800">
+            <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-slate-900 dark:text-white">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
+                2
+              </span>
+              विद्यालय एवं वर्ग विवरण (School &amp; Class)
+            </h2>
+            <p className="text-xs text-slate-500">
+              वर्तमान विद्यालय का नाम और अपनी कक्षा का चयन करें।
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Input
+                label="5. विद्यालय का नाम (School Name)"
+                requiredMark
+                placeholder="पूरा विद्यालय का नाम (जैसा स्कूल में है)"
+                error={errors.schoolName?.message}
+                {...register("schoolName")}
+              />
+            </div>
+
+            <Controller
+              name="class"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  label="6. वर्ग (Class)"
+                  required
+                  value={field.value || ""}
+                  onChange={(v) => field.onChange(String(v))}
+                  error={errors.class?.message}
+                  options={[...CLASS_OPTIONS]}
+                />
+              )}
+            />
+
+            <Input
+              label="7. स्कूल क्रमांक (School Roll No. - वैकल्पिक)"
+              placeholder="स्कूल का रोल नंबर (उदा. 15)"
+              error={errors.schoolRollNo?.message}
+              {...register("schoolRollNo")}
             />
           </div>
         </Card>
