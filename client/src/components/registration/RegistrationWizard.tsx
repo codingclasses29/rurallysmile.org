@@ -287,20 +287,25 @@ export function RegistrationWizard() {
           </div>
         </Card>
 
-        {/* Section 4: System Generated Pratibha Khoj Roll No Notice */}
-        <div className="rounded-2xl border border-teal-200 bg-teal-50/80 p-4 text-slate-800 dark:border-teal-900 dark:bg-slate-900 dark:text-teal-200">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">📋</span>
-            <div className="text-sm">
-              <p className="font-bold text-teal-900 dark:text-teal-300">
-                8. प्रतिभा खोज प्रतियोगिता का क्रमांक (Pratibha Khoj Roll No)
-              </p>
-              <p className="mt-0.5 text-xs text-slate-600 dark:text-slate-400">
-                प्रतिभा खोज परीक्षा का अनुक्रमांक (Roll No.) और Registration Number फॉर्म सबमिट
-                करने पर सिस्टम द्वारा तुरंत और स्वतः जनरेट हो जाएगा तथा रसीद एवं एडमिट कार्ड पर
-                उपलब्ध रहेगा।
-              </p>
+        {/* Section 4: Pratibha Khoj Roll No - Blank for Admin/Office assignment */}
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/90 p-4 text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                8
+              </span>
+              <div>
+                <p className="font-heading text-sm font-bold text-slate-900 dark:text-white">
+                  प्रतिभा खोज प्रतियोगिता का क्रमांक (Pratibha Khoj Roll No.)
+                </p>
+                <p className="text-xs text-slate-500">
+                  यह कॉलम फॉर्म में खाली (Blank) रहेगा — यह संस्थान / कार्यालय (Admin) द्वारा जांच के बाद आवंटित किया जाएगा।
+                </p>
+              </div>
             </div>
+            <span className="rounded-lg border border-dashed border-slate-300 bg-white px-3 py-1.5 text-xs font-mono font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800">
+              [ Blank / कार्यालय द्वारा देय ]
+            </span>
           </div>
         </div>
 

@@ -907,6 +907,10 @@ export const createRegistrationReceiptPDF = async (student) => {
   doc.fillColor(BRAND.navy).fontSize(11).font("Helvetica");
   const rows = [
     ["Registration No", student.registrationNumber],
+    [
+      "Pratibha Khoj Roll No",
+      student.rollNumber || "________________ (कार्यालय द्वारा देय)",
+    ],
     ["Student Name", student.name],
     ["Gender", student.gender || "N/A"],
     ["Father Name", student.fatherName],

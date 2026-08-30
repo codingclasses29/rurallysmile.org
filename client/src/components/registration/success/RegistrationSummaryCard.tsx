@@ -17,6 +17,12 @@ export function RegistrationSummaryCard({
           </dd>
         </div>
         <div className="flex justify-between gap-3">
+          <dt className="text-slate-500">Pratibha Khoj Roll No</dt>
+          <dd className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+            कार्यालय द्वारा आवंटित किया जाएगा (Admin Assumed)
+          </dd>
+        </div>
+        <div className="flex justify-between gap-3">
           <dt className="text-slate-500">Student Name</dt>
           <dd className="font-semibold text-brand-primary dark:text-white">
             {result.studentName}
