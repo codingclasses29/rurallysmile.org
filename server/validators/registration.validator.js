@@ -25,12 +25,10 @@ export const publicRegistrationValidator = [
   body("name").trim().notEmpty().withMessage("Student name is required"),
   body("fatherName").trim().notEmpty().withMessage("Father name is required"),
   body("motherName").optional().trim(),
-  body("dob").notEmpty().withMessage("Date of birth is required"),
   body("gender")
     .notEmpty()
     .isIn(["male", "female", "other", "Male", "Female", "Other"])
     .withMessage("Gender is required"),
-  body("category").optional().isIn(["General", "OBC", "SC", "ST", "EWS", "Other"]),
   body("class")
     .notEmpty()
     .isIn(["7", "8", "9", "10"])
@@ -45,27 +43,6 @@ export const publicRegistrationValidator = [
     .optional({ checkFalsy: true })
     .matches(/^\d{6}$/)
     .withMessage("PIN must be 6 digits"),
-  body("address").trim().notEmpty().withMessage("Address is required"),
-  body("mobile")
-    .trim()
-    .matches(/^[6-9]\d{9}$/)
-    .withMessage("Enter valid student mobile"),
-  body("parentMobile")
-    .optional({ checkFalsy: true })
-    .matches(/^[6-9]\d{9}$/)
-    .withMessage("Enter valid parent mobile"),
-  body("whatsapp")
-    .optional({ checkFalsy: true })
-    .matches(/^[6-9]\d{9}$/)
-    .withMessage("Enter valid WhatsApp number"),
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage("Email is required for OTP verification")
-    .isEmail()
-    .withMessage("Enter valid email")
-    .customSanitizer((v) => String(v || "").trim().toLowerCase()),
-  body("otp").trim().notEmpty().withMessage("OTP is required"),
 ];
 
 export const statusQueryValidator = [

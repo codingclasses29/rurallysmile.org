@@ -1,7 +1,7 @@
 import Student from "../models/Student.js";
 import Registration from "../models/Registration.js";
 import ApiError from "../utils/ApiError.js";
-import { generateOTP, saveOTP, verifyOTP, consumeVerifiedSession } from "./otp.service.js";
+import { generateOTP, saveOTP, verifyOTP } from "./otp.service.js";
 import { sendMail } from "./mail.service.js";
 import { registerStudentService, getSetting } from "./student.service.js";
 import logger from "../utils/logger.js";
@@ -91,28 +91,7 @@ export const submitRegistrationWithOtp = async (body, files) => {
     );
   }
 
-  const email = normalizeEmail(body.email);
-  const otp = String(body.otp || "").trim();
-
-  if (!email || !isValidEmail(email)) {
-    throw new ApiError(400, "Valid email is required for OTP verification");
-  }
-  if (!otp) throw new ApiError(400, "OTP is required");
-
-  const liveOk = await verifyOTP(otpKey(email), otp);
-  const sessionOk =
-    !liveOk && (otp === "verified" || otp.length >= 4)
-      ? await consumeVerifiedSession(email)
-      : false;
-
-  if (!liveOk && !sessionOk) {
-    throw new ApiError(400, "Invalid or expired OTP. Please resend to email.");
-  }
-
-  const result = await registerStudentService(
-    { ...body, email, otpVerified: true },
-    files
-  );
+  const result = await registerStudentService(body, files);
 
   return {
     success: true,

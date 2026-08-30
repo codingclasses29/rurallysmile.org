@@ -50,8 +50,6 @@ export default upload;
 export const uploadStudentDocs = upload.fields([
   { name: "photo", maxCount: 1 },
   { name: "signature", maxCount: 1 },
-  { name: "aadhaarDoc", maxCount: 1 },
-  { name: "schoolIdDoc", maxCount: 1 },
 ]);
 
 export { diskUpload, memoryUpload };

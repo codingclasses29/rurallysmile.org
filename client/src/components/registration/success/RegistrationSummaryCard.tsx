@@ -32,12 +32,6 @@ export function RegistrationSummaryCard({
             {result.examCentre}
           </dd>
         </div>
-        {result.mobile && (
-          <div className="flex justify-between gap-3">
-            <dt className="text-slate-500">Mobile</dt>
-            <dd className="font-mono font-semibold">{result.mobile}</dd>
-          </div>
-        )}
       </dl>
     </div>
   );

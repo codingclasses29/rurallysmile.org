@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card/Card";
 import { ProgressBar } from "../progress/ProgressBar";
 import { StepIndicator } from "../progress/StepIndicator";
-import { REG_STEPS } from "@/types/registration";
+import { FORM_STEP_COUNT, REG_STEPS } from "@/types/registration";
 import { cn } from "@/utils/cn";
 
 type Props = {
@@ -27,9 +27,9 @@ export function MultiStepLayout({
   return (
     <Card className={cn("mx-auto max-w-3xl overflow-hidden", className)}>
       <div className="mb-6 space-y-4">
-        <ProgressBar step={Math.min(step, 7)} />
-        <StepIndicator step={Math.min(step, 7)} onJump={onJump} />
-        {meta && step < 8 && (
+        <ProgressBar step={Math.min(step, FORM_STEP_COUNT)} />
+        <StepIndicator step={Math.min(step, FORM_STEP_COUNT)} onJump={onJump} />
+        {meta && step <= FORM_STEP_COUNT && (
           <div>
             <h2 className="font-heading text-xl font-extrabold text-brand-primary dark:text-white sm:text-2xl">
               {meta.title}

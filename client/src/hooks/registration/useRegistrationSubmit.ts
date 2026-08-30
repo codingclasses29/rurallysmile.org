@@ -22,7 +22,6 @@ export function useRegistrationSubmit() {
     async (
       values: RegistrationFormValues,
       files: RegistrationFiles,
-      otp: string
     ): Promise<RegistrationSuccess | null> => {
       setSubmitting(true);
       setError("");
@@ -33,12 +32,8 @@ export function useRegistrationSubmit() {
             fd.append(k, String(v));
           }
         });
-        if (!values.whatsapp) fd.set("whatsapp", values.mobile);
-        fd.append("otp", otp);
         if (files.photo) fd.append("photo", files.photo);
         if (files.signature) fd.append("signature", files.signature);
-        if (files.schoolIdDoc) fd.append("schoolIdDoc", files.schoolIdDoc);
-        if (files.aadhaarDoc) fd.append("aadhaarDoc", files.aadhaarDoc);
 
         const res = await registrationService.submit(fd);
         const regNo =
@@ -51,7 +46,6 @@ export function useRegistrationSubmit() {
           studentName: values.name,
           studentClass: values.class,
           examCentre: SITE.examCentre,
-          mobile: values.mobile,
         };
       } catch (err) {
         const message = errMessage(err, "Registration failed");

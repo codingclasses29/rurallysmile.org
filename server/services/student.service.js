@@ -12,8 +12,6 @@ import { generateRegistration } from "../utils/generateRegistration.js";
 import { generateRoll } from "../utils/generateRoll.js";
 import { generateQR } from "../services/qr.service.js";
 import { uploadImage } from "../services/upload.service.js";
-import { sendRegistrationMail } from "../services/mail.service.js";
-import { sendRegistrationWhatsApp } from "../services/whatsapp.service.js";
 import ApiError from "../utils/ApiError.js";
 import { STUDENT_STATUS } from "../utils/constants.js";
 import {
@@ -42,34 +40,21 @@ const assertFileSize = (file, max, label) => {
 };
 
 export const registerStudentService = async (body, files = {}) => {
-  if (!body.mobile) throw new ApiError(400, "Mobile is required");
-
-  const existing = await Student.findOne({ mobile: body.mobile });
-  if (existing) throw new ApiError(409, "Mobile already registered");
-
-  if (body.email) {
-    const emailExists = await Student.findOne({ email: String(body.email).toLowerCase() });
-    if (emailExists) throw new ApiError(409, "Email already registered");
-  }
 
   if (!files.photo?.[0]) throw new ApiError(400, "Student photo is required");
   if (!files.signature?.[0]) throw new ApiError(400, "Signature is required");
 
   assertFileSize(files.photo?.[0], MAX_PHOTO, "Photo");
   assertFileSize(files.signature?.[0], MAX_SIGNATURE, "Signature");
-  assertFileSize(files.aadhaarDoc?.[0], MAX_PHOTO, "Aadhaar");
-  assertFileSize(files.schoolIdDoc?.[0], MAX_PHOTO, "School ID");
 
   const registrationNumber = await generateRegistration(body.class || "8");
   const fileUrls = {};
 
-  for (const field of ["photo", "signature", "aadhaarDoc", "schoolIdDoc"]) {
+  for (const field of ["photo", "signature"]) {
     if (files[field]?.[0]) {
       try {
         const uploaded = await uploadImage(files[field][0], "examportal/students");
-        const key =
-          field === "aadhaarDoc" ? "aadhaar" : field === "schoolIdDoc" ? "schoolId" : field;
-        fileUrls[key] = uploaded.secure_url;
+        fileUrls[field] = uploaded.secure_url;
       } catch (err) {
         throw new ApiError(500, `${field} upload failed. Please try again.`);
       }
@@ -81,13 +66,7 @@ export const registerStudentService = async (body, files = {}) => {
     name: body.name,
     fatherName: body.fatherName,
     motherName: body.motherName,
-    mobile: body.mobile,
-    parentMobile: body.parentMobile,
-    whatsapp: body.whatsapp || body.mobile,
-    email: body.email,
-    dob: body.dob,
     gender: body.gender,
-    category: body.category || "General",
     medium: body.medium || "Hindi",
     class: body.class,
     schoolName: body.schoolName,
@@ -96,8 +75,6 @@ export const registerStudentService = async (body, files = {}) => {
     block: body.block,
     village: body.village,
     pinCode: body.pinCode,
-    address: body.address,
-    otpVerified: body.otpVerified === true || body.otpVerified === "true",
     status: STUDENT_STATUS.PENDING,
     ...fileUrls,
   });
@@ -116,11 +93,6 @@ export const registerStudentService = async (body, files = {}) => {
   }
 
   // Notifications (non-blocking)
-  Promise.allSettled([
-    sendRegistrationMail(student),
-    sendRegistrationWhatsApp(student),
-  ]).catch(() => {});
-
   return { student, registration, registrationNumber: student.registrationNumber };
 };
 

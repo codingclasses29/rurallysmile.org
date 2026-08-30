@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "@/components/ui/input/Input";
 import { Select } from "@/components/ui/select/Select";
 import type { RegistrationFormValues } from "@/schemas/registration.schema";
-import { CATEGORY_OPTIONS, GENDER_OPTIONS } from "@/types/registration";
+import { GENDER_OPTIONS } from "@/types/registration";
 import { RegSectionTitle } from "../shared/RegSectionTitle";
 
 export function PersonalDetailsForm() {
@@ -41,13 +41,6 @@ export function PersonalDetailsForm() {
           error={errors.motherName?.message}
           {...register("motherName")}
         />
-        <Input
-          label="Date of Birth"
-          type="date"
-          requiredMark
-          error={errors.dob?.message}
-          {...register("dob")}
-        />
         <Controller
           name="gender"
           control={control}
@@ -59,20 +52,6 @@ export function PersonalDetailsForm() {
               onChange={(v) => field.onChange(String(v))}
               error={errors.gender?.message}
               options={[...GENDER_OPTIONS]}
-            />
-          )}
-        />
-        <Controller
-          name="category"
-          control={control}
-          render={({ field }) => (
-            <Select
-              label="Category"
-              required
-              value={field.value || "General"}
-              onChange={(v) => field.onChange(String(v))}
-              error={errors.category?.message}
-              options={[...CATEGORY_OPTIONS]}
             />
           )}
         />

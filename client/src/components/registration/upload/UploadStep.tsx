@@ -3,7 +3,6 @@
 import type { RegistrationFiles } from "@/types/registration";
 import { PhotoUpload } from "./PhotoUpload";
 import { SignatureUpload } from "./SignatureUpload";
-import { DocumentsUpload } from "./DocumentsUpload";
 import { RequiredDocsHint } from "../shared/RequiredDocsHint";
 import { RegSectionTitle } from "../shared/RegSectionTitle";
 
@@ -31,16 +30,6 @@ export function UploadStep({ files, errors, onFile }: Props) {
           file={files.signature}
           error={errors.signature}
           onSelect={(f) => onFile("signature", f)}
-        />
-        <DocumentsUpload
-          schoolIdDoc={files.schoolIdDoc}
-          aadhaarDoc={files.aadhaarDoc}
-          errors={{
-            schoolIdDoc: errors.schoolIdDoc,
-            aadhaarDoc: errors.aadhaarDoc,
-          }}
-          onSchoolId={(f) => onFile("schoolIdDoc", f)}
-          onAadhaar={(f) => onFile("aadhaarDoc", f)}
         />
       </div>
     </div>

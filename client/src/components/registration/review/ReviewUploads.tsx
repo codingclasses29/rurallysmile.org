@@ -42,8 +42,6 @@ export function ReviewUploads({ files }: Props) {
     <div>
       <Thumb file={files.photo} label="Photo" />
       <Thumb file={files.signature} label="Signature" />
-      <Thumb file={files.schoolIdDoc} label="School ID" />
-      <Thumb file={files.aadhaarDoc} label="Aadhaar" />
     </div>
   );
 }

@@ -30,7 +30,7 @@ export function useRegistrationDraft(
         if (parsed.values) {
           setRestored({
             values: { ...registrationDefaults, ...parsed.values },
-            step: parsed.step && parsed.step < 8 ? parsed.step : 1,
+            step: parsed.step && parsed.step <= 5 ? parsed.step : 1,
           });
         }
       }
