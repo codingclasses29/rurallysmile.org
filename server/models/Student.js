@@ -16,6 +16,10 @@ const studentSchema = new mongoose.Schema(
       uppercase: true,
       trim: true,
     },
+    schoolRollNo: {
+      type: String,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
@@ -86,6 +90,10 @@ const studentSchema = new mongoose.Schema(
       trim: true,
     },
     village: {
+      type: String,
+      trim: true,
+    },
+    villagePost: {
       type: String,
       trim: true,
     },

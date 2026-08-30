@@ -22,10 +22,8 @@ export const verifyOtpValidator = [
 ];
 
 export const publicRegistrationValidator = [
+  body("schoolName").trim().notEmpty().withMessage("School name is required"),
   body("name").trim().notEmpty().withMessage("Student name is required"),
-  body("fatherName").trim().notEmpty().withMessage("Father name is required"),
-  body("motherName").optional().trim(),
-  body("dob").isISO8601().withMessage("Date of birth is required"),
   body("gender")
     .notEmpty()
     .isIn(["male", "female", "other", "Male", "Female", "Other"])
@@ -33,13 +31,23 @@ export const publicRegistrationValidator = [
   body("class")
     .notEmpty()
     .isIn(["7", "8", "9", "10"])
-    .withMessage("Class must be 7–10"),
-  body("schoolName").trim().notEmpty().withMessage("School name is required"),
+    .withMessage("Class must be 7, 8, 9 or 10"),
+  body("schoolRollNo").optional().trim(),
+  body("fatherName").trim().notEmpty().withMessage("Father name is required"),
+  body("mobile")
+    .trim()
+    .notEmpty()
+    .withMessage("Mobile number is required")
+    .matches(/^[6-9]\d{9}$/)
+    .withMessage("Enter a valid 10-digit mobile number"),
+  body("villagePost").optional().trim(),
+  body("village").optional().trim(),
+  body("motherName").optional().trim(),
+  body("dob").optional({ checkFalsy: true }),
   body("medium").optional().trim(),
   body("state").optional().trim(),
-  body("district").trim().notEmpty().withMessage("District is required"),
+  body("district").optional().trim(),
   body("block").optional().trim(),
-  body("village").optional().trim(),
   body("pinCode")
     .optional({ checkFalsy: true })
     .matches(/^\d{6}$/)

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/common/PageHeader";
 import { SITE } from "@/constants/site";
 import { settingsService } from "@/services/settings.service";
-import { RegistrationWizard } from "@/components/registration";
+import { RegistrationWizard } from "@/components/registration/RegistrationWizard";
 
 export function RegistrationShell({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState<boolean | null>(null);
