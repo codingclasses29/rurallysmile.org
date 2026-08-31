@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -8,32 +8,23 @@ import { Alert } from "@/components/ui/alert/Alert";
 import { Button } from "@/components/ui/button/Button";
 import { Input } from "@/components/ui/input/Input";
 import { Select } from "@/components/ui/select/Select";
-import { notify } from "@/components/ui/toast/Toast";
 import { Card } from "@/components/ui/card/Card";
 import {
   registrationDefaults,
   registrationFormSchema,
-  uploadFilesSchema,
   type RegistrationFormValues,
 } from "@/schemas/registration.schema";
 import {
   emptyFiles,
   CLASS_OPTIONS,
   GENDER_OPTIONS,
-  type RegistrationFiles,
   type RegistrationSuccess,
 } from "@/types/registration";
 import { useRegistrationSubmit } from "@/hooks/registration/useRegistrationSubmit";
-import { PhotoUpload } from "./upload/PhotoUpload";
-import { SignatureUpload } from "./upload/SignatureUpload";
 import { SuccessScreen } from "./success/SuccessScreen";
 import { RegistrationHelpCard } from "./shared/RegistrationHelpCard";
 
 export function RegistrationWizard() {
-  const [files, setFiles] = useState<RegistrationFiles>(emptyFiles());
-  const [uploadErrors, setUploadErrors] = useState<
-    Partial<Record<keyof RegistrationFiles, string>>
-  >({});
   const [success, setSuccess] = useState<RegistrationSuccess | null>(null);
 
   const {
@@ -50,29 +41,9 @@ export function RegistrationWizard() {
 
   const { submit, submitting, error: submitError } = useRegistrationSubmit();
 
-  const onFile = useCallback(
-    (key: keyof RegistrationFiles, file: File | null) => {
-      setFiles((current) => ({ ...current, [key]: file }));
-      setUploadErrors((current) => ({ ...current, [key]: undefined }));
-    },
-    []
-  );
-
   const onFormSubmit = async (values: RegistrationFormValues) => {
-    // Validate uploaded files
-    const fileResult = uploadFilesSchema.safeParse(files);
-    if (!fileResult.success) {
-      const errMap: Partial<Record<keyof RegistrationFiles, string>> = {};
-      fileResult.error.issues.forEach((issue) => {
-        errMap[issue.path[0] as keyof RegistrationFiles] = issue.message;
-      });
-      setUploadErrors(errMap);
-      notify.error("कृपया फोटो और हस्ताक्षर अपलोड करें");
-      return;
-    }
-
-    setUploadErrors({});
-    const res = await submit(values, files);
+    // No photo/signature required in registration form; blank files passed
+    const res = await submit(values, emptyFiles());
     if (res) {
       setSuccess(res);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -259,35 +230,7 @@ export function RegistrationWizard() {
           </div>
         </Card>
 
-        {/* Section 3: Photo & Signature Upload */}
-        <Card className="border border-slate-200 shadow-sm dark:border-slate-800">
-          <div className="mb-4 border-b border-slate-100 pb-3 dark:border-slate-800">
-            <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-slate-900 dark:text-white">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
-                3
-              </span>
-              दस्तावेज़ अपलोड (Photo &amp; Signature)
-            </h2>
-            <p className="text-xs text-slate-500">
-              Admit Card और Marksheet पर प्रिंट के लिए साफ फोटो और हस्ताक्षर अपलोड करें।
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <PhotoUpload
-              file={files.photo}
-              error={uploadErrors.photo}
-              onSelect={(f) => onFile("photo", f)}
-            />
-            <SignatureUpload
-              file={files.signature}
-              error={uploadErrors.signature}
-              onSelect={(f) => onFile("signature", f)}
-            />
-          </div>
-        </Card>
-
-        {/* Section 4: Pratibha Khoj Roll No - Blank for Admin/Office assignment */}
+        {/* Section 3: Pratibha Khoj Roll No - Blank for Admin/Office assignment */}
         <div className="rounded-2xl border border-slate-200 bg-slate-50/90 p-4 text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -305,6 +248,16 @@ export function RegistrationWizard() {
             </div>
             <span className="rounded-lg border border-dashed border-slate-300 bg-white px-3 py-1.5 text-xs font-mono font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800">
               [ Blank / कार्यालय द्वारा देय ]
+            </span>
+          </div>
+        </div>
+
+        {/* Open Photo Box Notification */}
+        <div className="rounded-2xl border border-teal-200 bg-teal-50/70 p-3.5 text-xs text-teal-900 dark:border-teal-900/60 dark:bg-teal-950/30 dark:text-teal-200">
+          <div className="flex items-center gap-2.5">
+            <span className="text-base">📸</span>
+            <span>
+              <strong>एडमिट कार्ड फोटो निर्देश:</strong> एडमिट कार्ड पर फोटो चिपकाने के लिए अलग से बॉक्स (Affix Photo Box) दिया गया है। ऑनलाइन फॉर्म में फोटो/हस्ताक्षर अपलोड करने की आवश्यकता नहीं है।
             </span>
           </div>
         </div>

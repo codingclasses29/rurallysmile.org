@@ -234,10 +234,23 @@ function drawPhotoBox(doc, x, y, w, h, photoBuf) {
       /* fall through */
     }
   }
+
+  doc.save();
+  doc.dash(3, { space: 2 });
+  doc.rect(x + 5, y + 5, w - 10, h - 10).lineWidth(0.8).strokeColor("#94A3B8").stroke();
+  doc.undash();
+  doc.restore();
+
   doc
-    .fontSize(9)
+    .fontSize(7.5)
+    .font("Helvetica-Bold")
+    .fillColor(BRAND.tealDeep)
+    .text("AFFIX PHOTO", x, y + h / 2 - 10, { width: w, align: "center" });
+  doc
+    .fontSize(6.5)
+    .font("Helvetica")
     .fillColor(BRAND.muted)
-    .text("PHOTO", x, y + h / 2 - 6, { width: w, align: "center" });
+    .text("फोटो यहाँ चिपकाएं", x, y + h / 2 + 2, { width: w, align: "center" });
   return false;
 }
 

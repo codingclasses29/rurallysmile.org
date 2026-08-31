@@ -131,13 +131,13 @@ function fileSchema(opts: {
 
 export const uploadFilesSchema = z.object({
   photo: fileSchema({
-    required: true,
+    required: false,
     maxBytes: 2 * 1024 * 1024,
     types: imageTypes,
     label: "Student Photo (फोटो)",
   }),
   signature: fileSchema({
-    required: true,
+    required: false,
     maxBytes: 1 * 1024 * 1024,
     types: imageTypes,
     label: "Signature (हस्ताक्षर)",

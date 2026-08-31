@@ -41,11 +41,12 @@ const assertFileSize = (file, max, label) => {
 
 export const registerStudentService = async (body, files = {}) => {
 
-  if (!files.photo?.[0]) throw new ApiError(400, "Student photo is required");
-  if (!files.signature?.[0]) throw new ApiError(400, "Signature is required");
-
-  assertFileSize(files.photo?.[0], MAX_PHOTO, "Photo");
-  assertFileSize(files.signature?.[0], MAX_SIGNATURE, "Signature");
+  if (files.photo?.[0]) {
+    assertFileSize(files.photo[0], MAX_PHOTO, "Photo");
+  }
+  if (files.signature?.[0]) {
+    assertFileSize(files.signature[0], MAX_SIGNATURE, "Signature");
+  }
 
   const registrationNumber = await generateRegistration(body.class || "8");
   const fileUrls = {};
@@ -256,7 +257,7 @@ export const approveStudent = async (studentId, adminId) => {
   student.rejectedBy = undefined;
   student.rejectedAt = undefined;
   student.rejectionReason = undefined;
-  if (!student.rollNumber) student.rollNumber = generateRoll();
+  if (!student.rollNumber) student.rollNumber = await generateRoll();
   await student.save();
 
   await Registration.findOneAndUpdate({ student: student._id }, { verified: true });
@@ -366,7 +367,7 @@ export const generateAdmitForStudent = async (studentId, adminId, options = {}) 
   if (admit) return { admitCard: admit, student, alreadyExists: true };
 
   if (!student.rollNumber) {
-    student.rollNumber = generateRoll();
+    student.rollNumber = await generateRoll();
     await student.save();
   }
 
