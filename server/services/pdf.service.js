@@ -242,15 +242,15 @@ function drawPhotoBox(doc, x, y, w, h, photoBuf) {
   doc.restore();
 
   doc
-    .fontSize(7.5)
+    .fontSize(8)
     .font("Helvetica-Bold")
     .fillColor(BRAND.tealDeep)
-    .text("AFFIX PHOTO", x, y + h / 2 - 10, { width: w, align: "center" });
+    .text("AFFIX PHOTO", x, y + h / 2 - 8, { width: w, align: "center" });
   doc
     .fontSize(6.5)
     .font("Helvetica")
     .fillColor(BRAND.muted)
-    .text("फोटो यहाँ चिपकाएं", x, y + h / 2 + 2, { width: w, align: "center" });
+    .text("Passport Size", x, y + h / 2 + 3, { width: w, align: "center" });
   return false;
 }
 
@@ -526,14 +526,19 @@ export const createAdmitCardPDF = async (student, admitCard) => {
     .font("Helvetica-Bold")
     .fontSize(9)
     .text("IMPORTANT INSTRUCTIONS", left + 8, y + 8);
-  doc.font("Helvetica").fontSize(7).fillColor(BRAND.navy);
   EXAM_INSTRUCTIONS_EN.forEach((line, i) => {
-    doc.text(`◆  ${line}`, left + 8, y + 24 + i * 14, {
-      width: leftColW - 16,
-      height: 13,
-      ellipsis: true,
-      lineBreak: false,
-    });
+    const itemY = y + 24 + i * 14;
+    doc.circle(left + 12, itemY + 4, 1.6).fill(BRAND.tealDeep);
+    doc
+      .fillColor(BRAND.navy)
+      .font("Helvetica")
+      .fontSize(7)
+      .text(line, left + 18, itemY, {
+        width: leftColW - 26,
+        height: 13,
+        ellipsis: true,
+        lineBreak: false,
+      });
   });
 
   const rx = left + leftColW + colGap;
@@ -922,7 +927,7 @@ export const createRegistrationReceiptPDF = async (student) => {
     ["Registration No", student.registrationNumber],
     [
       "Pratibha Khoj Roll No",
-      student.rollNumber || "________________ (कार्यालय द्वारा देय)",
+      student.rollNumber || "________________ (Office Use)",
     ],
     ["Student Name", student.name],
     ["Gender", student.gender || "N/A"],
