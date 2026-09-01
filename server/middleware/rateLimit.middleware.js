@@ -1,11 +1,20 @@
 import rateLimit from "express-rate-limit";
 
+// Helper to extract true client IP across Vercel/Render proxy chains
+export const getClientIp = (req) => {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (forwarded) {
+    return String(forwarded).split(",")[0].trim();
+  }
+  return req.headers["x-real-ip"] || req.ip || "127.0.0.1";
+};
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 300,
+  max: 10000,
   standardHeaders: true,
   legacyHeaders: false,
-  // Do not count successful GETs as aggressively for shared hosting
+  keyGenerator: getClientIp,
   skip: (req) => req.method === "OPTIONS",
   message: {
     success: false,
@@ -19,10 +28,11 @@ export const generalLimiter = limiter;
 
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 40,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true,
+  keyGenerator: getClientIp,
   message: {
     success: false,
     message:
@@ -33,10 +43,12 @@ export const authLimiter = rateLimit({
 });
 
 export const registrationLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 20,
+  windowMs: 15 * 60 * 1000,
+  max: 5000, // High capacity for school labs and mass registrations
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: getClientIp,
+  skip: (req) => req.method === "OPTIONS",
   message: {
     success: false,
     message: "Registration limit reached, please try again later",

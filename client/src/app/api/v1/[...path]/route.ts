@@ -42,6 +42,15 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
     headers.set(key, value);
   });
 
+  const clientIp =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "";
+  if (clientIp) {
+    headers.set("x-forwarded-for", clientIp);
+    headers.set("x-real-ip", clientIp);
+  }
+
   // Ask upstream for plain bytes. Node fetch decompresses gzip, so
   // forwarding Content-Encoding would break the browser (ERR_CONTENT_DECODING_FAILED).
   headers.set("accept-encoding", "identity");
