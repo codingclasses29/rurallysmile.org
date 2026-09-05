@@ -62,7 +62,7 @@ export default function ResultClient() {
   };
 
   const marks = result?.total ?? result?.marks ?? 0;
-  const max = result?.maxMarks || 100;
+  const max = result?.maxMarks || 40;
 
   return (
     <>

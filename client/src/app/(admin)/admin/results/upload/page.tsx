@@ -247,7 +247,7 @@ export default function DataImportCenterPage() {
           </p>
           <h1 className="h3 fw-bold mb-1">Excel + Google Sheets</h1>
           <p className="text-muted mb-0">
-            Import results (total marks 0–100) · Validate · Sync · Publish
+            Import results (total marks 0–40) · Validate · Sync · Publish
           </p>
         </div>
         <div className="d-flex flex-wrap gap-2">
@@ -353,8 +353,8 @@ export default function DataImportCenterPage() {
             placeholder="https://docs.google.com/spreadsheets/d/..."
           />
           <p className="small text-muted mb-2">
-            Columns: <code>rollNumber</code> + <code>marks</code> (0–100), or{" "}
-            <code>hindi, math, gk, gs</code> (summed &amp; capped at 100).
+            Columns: <code>rollNumber</code> + <code>marks</code> (0–40), or{" "}
+            <code>hindi, math, gk, gs</code> (summed &amp; capped at 40).
           </p>
 
           <div className="alert alert-info py-2 small mb-3">
@@ -523,7 +523,7 @@ export default function DataImportCenterPage() {
                         <td className="fw-semibold">{r.rollNumber}</td>
                         <td>{r.studentName || "—"}</td>
                         <td>{r.studentClass || "—"}</td>
-                        <td>{r.marks}/100</td>
+                        <td>{r.marks}/40</td>
                         <td>
                           <span
                             className={`badge ${
@@ -576,7 +576,7 @@ export default function DataImportCenterPage() {
 
       <div className="alert alert-info mb-0">
         <strong>Columns:</strong> <code>rollNumber, marks</code> (preferred){" "}
-        — or <code>rollNumber, hindi, math, gk, gs</code> (sum → total /100).
+        — or <code>rollNumber, hindi, math, gk, gs</code> (sum → total /40).
         DSA: HashMap roll lookup · HashSet duplicates · Merge sort merit.
       </div>
     </div>

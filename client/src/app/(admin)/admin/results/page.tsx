@@ -96,7 +96,7 @@ export default function AdminResultsPage() {
         <div>
           <h1 className="h3 fw-bold mb-1">Results</h1>
           <p className="text-muted mb-0">
-            Total marks 100 · Pass 33% · Publish / unpublish results
+            Total marks 40 · Pass 33% (14 marks) · Publish / unpublish results
           </p>
         </div>
         <div className="d-flex flex-wrap gap-2">
@@ -174,7 +174,7 @@ export default function AdminResultsPage() {
               <tr>
                 <th>Student</th>
                 <th>Class</th>
-                <th>Marks / 100</th>
+                <th>Marks / 40</th>
                 <th>%</th>
                 <th>Grade</th>
                 <th>Status</th>
@@ -207,7 +207,7 @@ export default function AdminResultsPage() {
                   </td>
                   <td>
                     {row.marks ?? row.total ?? "—"}
-                    <span className="text-muted small"> / 100</span>
+                    <span className="text-muted small"> / 40</span>
                   </td>
                   <td>{row.percentage ?? "—"}</td>
                   <td>{row.grade ?? "—"}</td>

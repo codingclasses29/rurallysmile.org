@@ -5,8 +5,8 @@ export const resultValidator = [
   body("marks")
     .notEmpty()
     .withMessage("Marks are required")
-    .isFloat({ min: 0, max: 100 })
-    .withMessage("Marks must be between 0 and 100"),
+    .isFloat({ min: 0, max: 40 })
+    .withMessage("Marks must be between 0 and 40"),
 ];
 
 export const resultQueryValidator = [

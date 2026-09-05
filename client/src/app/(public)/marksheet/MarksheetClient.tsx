@@ -44,7 +44,7 @@ export default function MarksheetClient() {
     <>
       <PageHeader
         title="Digital Marksheet"
-        description="Roll Number से डिजिटल मार्कशीट देखें / PDF डाउनलोड करें · कुल 100 अंक"
+        description="Roll Number से डिजिटल मार्कशीट देखें / PDF डाउनलोड करें · कुल 40 अंक"
       />
       <div className="container-page section-pad pt-0">
         <div className="mx-auto max-w-3xl">

@@ -296,30 +296,30 @@ export default function AdminMarksheetPage() {
                 </div>
                 <div className="card-body">
                   <p className="small text-muted mb-3">
-                    कुल प्राप्तांक <strong>0–100</strong> · पासिंग 33% · Grade
-                    A+ ≥80%
+                    कुल प्राप्तांक <strong>0–40</strong> · पासिंग 14 अंक (33%) · Grade
+                    A+ ≥32 अंक (80%)
                   </p>
                   <div className="mb-3">
                     <label className="form-label small mb-1">
-                      Total Marks / कुल अंक (out of 100) *
+                      Total Marks / कुल अंक (out of 40) *
                     </label>
                     <input
                       type="number"
                       min={0}
-                      max={100}
+                      max={40}
                       step={1}
                       className="form-control form-control-lg fw-bold"
                       value={totalMarks}
                       onChange={(e) =>
                         setTotalMarks(
-                          Math.min(100, Math.max(0, Number(e.target.value) || 0))
+                          Math.min(40, Math.max(0, Number(e.target.value) || 0))
                         )
                       }
                     />
                   </div>
                   <div className="alert alert-light border small mb-0">
-                    Obtained: <strong>{totalMarks}</strong> / 100
-                    {totalMarks >= 33 ? (
+                    Obtained: <strong>{totalMarks}</strong> / 40
+                    {totalMarks >= 14 ? (
                       <span className="badge text-bg-success ms-2">Pass</span>
                     ) : (
                       <span className="badge text-bg-danger ms-2">Fail</span>

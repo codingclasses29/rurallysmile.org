@@ -10,13 +10,13 @@ export const upsertResult = async ({ rollNumber, marks, total }) => {
   });
   if (!student) throw new ApiError(404, "Student / roll number not found");
 
-  const value = Math.min(100, Math.max(0, Math.round(Number(marks ?? total ?? 0))));
+  const value = Math.min(40, Math.max(0, Math.round(Number(marks ?? total ?? 0))));
 
   let result = await resultRepo.findResultByStudent(student._id);
   if (result) {
     result.marks = value;
     result.total = value;
-    result.maxMarks = 100;
+    result.maxMarks = 40;
     result.hindi = 0;
     result.math = 0;
     result.gk = 0;
@@ -27,7 +27,7 @@ export const upsertResult = async ({ rollNumber, marks, total }) => {
       student: student._id,
       marks: value,
       total: value,
-      maxMarks: 100,
+      maxMarks: 40,
       hindi: 0,
       math: 0,
       gk: 0,

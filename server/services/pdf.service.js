@@ -720,7 +720,8 @@ export const createMarksheetPDF = async (student, result) => {
 
   // Marks table
   const obtained = result.total ?? result.marks ?? 0;
-  const maxMarks = result.maxMarks || 100;
+  const maxMarks = result.maxMarks || 40;
+  const passMarks = Math.ceil(maxMarks * 0.33);
   doc.rect(left, y, contentW, 24).fill(BRAND.tealDeep);
   doc.fillColor("#fff").font("Helvetica-Bold").fontSize(9);
   doc.text("PARTICULARS", left + 8, y + 7, { width: 220 });
@@ -746,7 +747,7 @@ export const createMarksheetPDF = async (student, result) => {
     });
   doc.fillColor(BRAND.navy).font("Helvetica").fontSize(11);
   doc.text(String(maxMarks), left + 250, y + 14, { width: 80, align: "center" });
-  doc.text("33", left + 340, y + 14, { width: 80, align: "center" });
+  doc.text(String(passMarks), left + 340, y + 14, { width: 80, align: "center" });
   doc
     .fillColor(BRAND.green)
     .font("Helvetica-Bold")

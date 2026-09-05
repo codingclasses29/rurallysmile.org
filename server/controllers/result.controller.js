@@ -9,18 +9,18 @@ import * as resultService from "../services/result.service.js";
 import { parsePagination, parseStrictBoolean } from "../utils/adminWorkflow.js";
 
 function parseTotalMarks(body = {}) {
-  // Prefer single total / marks (0–100). Ignore subject-wise for admin entry.
+  // Prefer single total / marks (0–40). Ignore subject-wise for admin entry.
   if (body.marks !== undefined || body.total !== undefined) {
-    const n = Math.min(100, Math.max(0, Math.round(Number(body.marks ?? body.total) || 0)));
+    const n = Math.min(40, Math.max(0, Math.round(Number(body.marks ?? body.total) || 0)));
     return { marks: n, total: n, hindi: 0, math: 0, gk: 0, gs: 0 };
   }
-  // Legacy: if only subjects sent, sum them (capped at 100)
+  // Legacy: if only subjects sent, sum them (capped at 40)
   const sum =
     (Number(body.hindi) || 0) +
     (Number(body.math) || 0) +
     (Number(body.gk) || 0) +
     (Number(body.gs) || 0);
-  const n = Math.min(100, Math.max(0, Math.round(sum)));
+  const n = Math.min(40, Math.max(0, Math.round(sum)));
   return { marks: n, total: n, hindi: 0, math: 0, gk: 0, gs: 0 };
 }
 
@@ -35,13 +35,13 @@ export const createResult = asyncHandler(async (req, res) => {
   let result = await Result.findOne({ student: student._id });
   if (result) {
     Object.assign(result, payload);
-    result.maxMarks = 100;
+    result.maxMarks = 40;
     await result.save();
   } else {
     result = await Result.create({
       student: student._id,
       ...payload,
-      maxMarks: 100,
+      maxMarks: 40,
     });
   }
   if (result.published) {
@@ -115,7 +115,7 @@ export const updateResult = asyncHandler(async (req, res) => {
     req.body.total !== undefined
   ) {
     Object.assign(result, parseTotalMarks(req.body));
-    result.maxMarks = 100;
+    result.maxMarks = 40;
   }
 
   if (req.body.published !== undefined) {

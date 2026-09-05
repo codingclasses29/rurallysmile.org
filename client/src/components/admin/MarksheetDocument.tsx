@@ -12,8 +12,8 @@ type Props = {
   zoom?: number;
 };
 
-const PAPER_MAX = 100;
-const PASS_MARKS = 33;
+const PAPER_MAX = 40;
+const PASS_MARKS = 14;
 
 function docId(roll?: string) {
   const digits = String(roll || "")

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-/** Exam paper = 100 marks total (single entry, not per-subject) */
-const PAPER_MAX = 100;
+/** Exam paper = 40 marks total (single entry, not per-subject) */
+const PAPER_MAX = 40;
 
 const resultSchema = new mongoose.Schema(
   {

@@ -11,7 +11,7 @@ import {
   valuesToObjects,
 } from "./googleSheetsAuth.service.js";
 
-const PAPER_MAX = 100;
+const PAPER_MAX = 40;
 const PASS_PCT = 33;
 
 const DEFAULT_SHEET_URL =
@@ -453,9 +453,9 @@ export async function getSheetConfig() {
 /** Build sample Excel buffer for download */
 export function buildSampleResultExcel() {
   const data = [
-    { rollNumber: "RTN260001", marks: 85 },
-    { rollNumber: "RTN260002", marks: 92 },
-    { rollNumber: "RTN260003", marks: 78 },
+    { rollNumber: "RSF0001", marks: 34 },
+    { rollNumber: "RSF0002", marks: 38 },
+    { rollNumber: "RSF0003", marks: 28 },
   ];
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.json_to_sheet(data);
