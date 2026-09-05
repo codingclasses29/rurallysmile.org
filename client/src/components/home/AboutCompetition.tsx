@@ -76,7 +76,7 @@ export function AboutCompetition() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                  Hindi medium · 4 subjects = 100 marks
+                  Hindi medium · 4 subjects = 40 marks
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />

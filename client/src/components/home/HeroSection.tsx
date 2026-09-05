@@ -70,7 +70,7 @@ export function HeroSection() {
             {SITE.titleHindi}
           </h1>
           <p className="mt-3 text-base font-medium text-cyan-100 sm:text-lg">
-            केवल कक्षा 7, 8, 9 एवं 10 ({SITE.medium}) · चार विषय मिलकर 100 अंक
+            केवल कक्षा 7, 8, 9 एवं 10 ({SITE.medium}) · चार विषय मिलकर 40 अंक
           </p>
 
           <div className="card portal-hero-info mt-6">

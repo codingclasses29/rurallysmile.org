@@ -133,7 +133,7 @@ export function normalizeResultRow(raw, rowIndex) {
       ok: false,
       row: rowIndex,
       rollNumber,
-      error: "Missing marks / total (0–100)",
+      error: "Missing marks / total (0–40)",
     };
   }
 

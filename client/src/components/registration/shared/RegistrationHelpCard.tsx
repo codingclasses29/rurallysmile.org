@@ -91,13 +91,13 @@ export function RegistrationHelpCard() {
             Subjects
           </h3>
           <p className="mt-1 text-xs text-slate-500">
-            4 subjects · 25 each · Total 100 · Pass 33%
+            4 subjects · 10 each · Total 40 · Pass 33%
           </p>
           <ul className="mt-2 space-y-1 text-slate-600 dark:text-slate-300">
             {SUBJECTS.map((s) => (
               <li key={s.en}>
                 {s.icon} {s.title}{" "}
-                <span className="text-xs text-slate-400">(25)</span>
+                <span className="text-xs text-slate-400">(10)</span>
               </li>
             ))}
           </ul>

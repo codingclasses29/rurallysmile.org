@@ -114,7 +114,7 @@ export default function MeritListClient() {
                   <td className="px-4 py-3 font-mono">{r.student?.rollNumber}</td>
                   <td className="px-4 py-3">{r.student?.class}</td>
                   <td className="px-4 py-3">
-                    {r.marks ?? r.total ?? "—"}/100
+                    {r.marks ?? r.total ?? "—"}/40
                   </td>
                   <td className="px-4 py-3">{r.percentage}%</td>
                   <td className="px-4 py-3">{r.grade}</td>

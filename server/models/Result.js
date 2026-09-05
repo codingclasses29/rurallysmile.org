@@ -60,7 +60,7 @@ const resultSchema = new mongoose.Schema(
 resultSchema.pre("save", function (next) {
   this.maxMarks = PAPER_MAX;
 
-  // Prefer explicit marks/total (0–100). Subjects are ignored for scoring.
+  // Prefer explicit marks/total (0–40). Subjects are ignored for scoring.
   let obtained = Number(this.marks ?? this.total ?? 0);
   if (!Number.isFinite(obtained)) obtained = 0;
   obtained = Math.min(PAPER_MAX, Math.max(0, Math.round(obtained)));

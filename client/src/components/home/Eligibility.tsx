@@ -39,7 +39,7 @@ export function Eligibility() {
             <span className={portalPage.badge}>Subjects</span>
             <h2 className={`${portalPage.title} mt-4`}>परीक्षा विषय</h2>
             <p className={portalPage.subtitle}>
-              चार विषय मिलकर कुल 100 अंक · प्रत्येक 25 अंक · पासिंग 33%
+              चार विषय मिलकर कुल 40 अंक · प्रत्येक 10 अंक · पासिंग 33%
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {SUBJECTS.map((s) => (
@@ -56,7 +56,7 @@ export function Eligibility() {
                   </p>
                   <p className="text-sm text-slate-500">{s.en}</p>
                   <span className="mt-3 inline-flex rounded-full bg-gradient-to-r from-[#1399A2] to-cyan-500 px-3 py-1 text-xs font-bold text-white">
-                    25 Marks
+                    10 Marks
                   </span>
                 </motion.div>
               ))}
