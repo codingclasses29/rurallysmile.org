@@ -24,7 +24,9 @@ const seed = async () => {
       });
       console.log("Super Admin created:", email);
     } else {
-      console.log("Super Admin already exists:", email);
+      admin.password = password;
+      await admin.save();
+      console.log("Super Admin password updated:", email);
     }
 
     const centerCode = "RSP-RATANPURA";
