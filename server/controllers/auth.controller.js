@@ -20,7 +20,13 @@ export const login = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Login Successful",
-    data: result.admin,
+    data: {
+      ...result.admin,
+      token: result.accessToken,
+      accessToken: result.accessToken,
+    },
+    token: result.accessToken,
+    accessToken: result.accessToken,
     errors: null,
   });
 });

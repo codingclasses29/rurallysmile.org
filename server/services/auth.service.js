@@ -19,13 +19,39 @@ const cookieOptions = (maxAge) => ({
 
 export const loginAdmin = async ({ email, password, ip, userAgent }) => {
   const normalizedEmail = String(email || "").trim().toLowerCase();
-  const plainPassword = String(password ?? "");
+  const plainPassword = String(password ?? "").trim();
 
-  const admin = await Admin.findOne({ email: normalizedEmail }).select("+password");
-  if (!admin) throw new ApiError(404, "Admin not found");
+  let admin = await Admin.findOne({ email: normalizedEmail }).select("+password");
+  const primaryEmail = (process.env.ADMIN_EMAIL || "codingclasses29@gmail.com").trim().toLowerCase();
+
+  if (!admin && normalizedEmail === primaryEmail) {
+    admin = new Admin({
+      name: "Super Admin",
+      email: primaryEmail,
+      password: process.env.ADMIN_PASSWORD || "Sachin7323@#",
+      role: "SUPER_ADMIN",
+      isActive: true,
+    });
+    await admin.save();
+    admin = await Admin.findOne({ email: primaryEmail }).select("+password");
+  }
+
+  if (!admin) throw new ApiError(404, "Admin not found with this email");
   if (!admin.isActive) throw new ApiError(403, "Account is inactive");
 
-  const isMatch = await admin.comparePassword(plainPassword);
+  let isMatch = await admin.comparePassword(plainPassword);
+
+  // Accept both Sachin7323@# and previous Sachin2026@# for super admin so user is never locked out
+  if (
+    !isMatch &&
+    normalizedEmail === primaryEmail &&
+    (plainPassword === "Sachin7323@#" || plainPassword === "Sachin2026@#")
+  ) {
+    admin.password = plainPassword;
+    await admin.save();
+    isMatch = true;
+  }
+
   if (!isMatch) throw new ApiError(401, "Invalid Password");
 
   const accessToken = generateAccessToken(admin);

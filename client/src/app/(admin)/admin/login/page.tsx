@@ -14,43 +14,64 @@ function resolveNextPath(next: string | null) {
 
 function LoginForm() {
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("codingclasses29@gmail.com");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setErrorMsg(null);
     setLoading(true);
     try {
-      const res = await authService.login({ email, password });
+      const cleanEmail = email.trim();
+      const cleanPassword = password.trim();
+      const res = await authService.login({ email: cleanEmail, password: cleanPassword });
       if (res.success) {
         notify.loginSuccess();
         window.location.href = resolveNextPath(searchParams.get("next"));
       } else {
-        notify.error(res.message || "Login failed");
+        const msg = res.message || "Login failed";
+        setErrorMsg(msg);
+        notify.error(msg);
       }
     } catch (err: unknown) {
       const ax = err as {
-        response?: { status?: number; data?: { message?: string } };
+        response?: { status?: number; data?: { message?: string; errors?: Array<{ msg?: string; message?: string }> } };
         message?: string;
+        errors?: Array<{ msg?: string; message?: string }> | null;
+        status?: number;
       };
-      const status = ax.response?.status;
-      const apiMsg = ax.response?.data?.message;
-      if (status === 429) {
-        notify.error(
-          apiMsg ||
-            "Too many requests. Please wait 5–10 minutes, then try again."
-        );
-      } else {
-        notify.error(apiMsg || ax.message || "Login failed");
+      const status = ax.response?.status || ax.status;
+      const apiMsg =
+        ax.errors?.[0]?.msg ||
+        ax.errors?.[0]?.message ||
+        ax.response?.data?.errors?.[0]?.msg ||
+        ax.response?.data?.message ||
+        ax.message ||
+        "Login failed";
+
+      let finalMsg = apiMsg;
+      if (status === 401) {
+        finalMsg = "गलत पासवर्ड (Invalid Password). कृपया सही पासवर्ड दर्ज करें।";
+      } else if (status === 404) {
+        finalMsg = "एडमिन खाता नहीं मिला (Admin not found). ईमेल सही से जांचें।";
+      } else if (status === 429) {
+        finalMsg = "बहुत अधिक प्रयास (Too many requests). कृपया 5–10 मिनट बाद पुनः प्रयास करें।";
+      } else if (status === 504 || status === 502 || apiMsg.includes("fetch failed") || apiMsg.includes("Network Error")) {
+        finalMsg = "सर्वर चालू हो रहा है (Server waking up). कृपया 30 सेकंड बाद दोबारा 'Sign In' दबाएं।";
       }
+
+      setErrorMsg(finalMsg);
+      notify.error(finalMsg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="card shadow border-0" style={{ maxWidth: 420, width: "100%" }}>
+    <div className="card shadow border-0" style={{ maxWidth: 440, width: "100%" }}>
       <div className="card-body p-4 p-md-5">
         <div className="text-center mb-4">
           <div
@@ -62,38 +83,67 @@ function LoginForm() {
           <h1 className="h4 fw-bold mb-1">Admin Login</h1>
           <p className="text-muted small mb-0">Pratibha Khoj Exam Portal</p>
         </div>
+
+        {errorMsg && (
+          <div className="alert alert-danger py-2 px-3 small mb-3 d-flex align-items-center gap-2" role="alert">
+            <i className="bi bi-exclamation-triangle-fill shrink-0 fs-5" />
+            <div>{errorMsg}</div>
+          </div>
+        )}
+
         <form onSubmit={onSubmit}>
           <div className="mb-3">
             <label className="form-label fw-semibold" htmlFor="email">
-              Email
+              Admin Email / यूज़र आईडी
             </label>
             <input
               id="email"
               type="email"
               className="form-control form-control-lg"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errorMsg) setErrorMsg(null);
+              }}
               required
               autoComplete="username"
+              placeholder="codingclasses29@gmail.com"
             />
           </div>
+
           <div className="mb-4">
             <label className="form-label fw-semibold" htmlFor="password">
-              Password
+              Password / पासवर्ड
             </label>
-            <input
-              id="password"
-              type="password"
-              className="form-control form-control-lg"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-            />
+            <div className="input-group">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                className="form-control form-control-lg"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errorMsg) setErrorMsg(null);
+                }}
+                required
+                autoComplete="current-password"
+                placeholder="Sachin7323@#"
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary px-3"
+                onClick={() => setShowPassword(!showPassword)}
+                title={showPassword ? "Hide password" : "Show password"}
+                tabIndex={-1}
+              >
+                <i className={`bi bi-eye${showPassword ? "-slash" : ""}`} />
+              </button>
+            </div>
           </div>
+
           <button
             type="submit"
-            className="btn btn-primary w-100 btn-lg"
+            className="btn btn-primary w-100 btn-lg shadow-sm"
             disabled={loading}
           >
             {loading ? (
@@ -102,10 +152,27 @@ function LoginForm() {
                 Signing in…
               </>
             ) : (
-              "Sign In"
+              "Sign In / लॉगिन करें"
             )}
           </button>
         </form>
+
+        <div className="mt-4 p-3 bg-light rounded-3 text-start border">
+          <p className="small text-muted mb-2 fw-bold d-flex align-items-center gap-1">
+            <i className="bi bi-key-fill text-primary" />
+            <span>Admin Login Details:</span>
+          </p>
+          <div className="small text-secondary space-y-1">
+            <div>
+              <span className="text-muted">User ID:</span>{" "}
+              <strong className="text-dark font-monospace user-select-all">codingclasses29@gmail.com</strong>
+            </div>
+            <div>
+              <span className="text-muted">Password:</span>{" "}
+              <strong className="text-dark font-monospace user-select-all">Sachin7323@#</strong>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

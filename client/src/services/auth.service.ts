@@ -3,14 +3,25 @@ import type { ApiResponse, AuthUser } from "@/types";
 
 export const authService = {
   login: async (payload: { email: string; password: string }) => {
-    const { data } = await api.post<ApiResponse<AuthUser>>(
+    const cleanPayload = {
+      email: payload.email?.trim(),
+      password: payload.password?.trim(),
+    };
+    const { data } = await api.post<ApiResponse<AuthUser & { token?: string }>>(
       "/auth/login",
-      payload
+      cleanPayload
     );
+    if (typeof window !== "undefined" && data?.data) {
+      const tok = (data.data as { token?: string }).token || (data as unknown as { token?: string }).token;
+      if (tok) localStorage.setItem("adminToken", tok);
+    }
     return data;
   },
 
   logout: async () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("adminToken");
+    }
     const { data } = await api.post<ApiResponse>("/auth/logout");
     return data;
   },

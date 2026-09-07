@@ -53,8 +53,13 @@ const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests without origin (Postman, server-to-server, etc.)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests without origin (Postman, mobile apps, server-to-server, etc.)
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      origin.includes("vercel.app") ||
+      origin.includes("rurallysmile.org")
+    ) {
       callback(null, true);
     } else {
       callback(new Error(`CORS blocked for origin: ${origin}`));
