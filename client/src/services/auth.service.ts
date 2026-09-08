@@ -12,7 +12,9 @@ export const authService = {
       cleanPayload
     );
     if (typeof window !== "undefined" && data?.data) {
-      const tok = (data.data as { token?: string }).token || (data as unknown as { token?: string }).token;
+      const tok =
+        (data.data as { token?: string }).token ||
+        (data as unknown as { token?: string }).token;
       if (tok) localStorage.setItem("adminToken", tok);
     }
     return data;

@@ -9,7 +9,7 @@ async function updatePassword() {
     await mongoose.connect(mongoUri);
 
     const email = "codingclasses29@gmail.com";
-    const newPassword = "Sachin7323@#";
+    const newPassword = "Sachin123456@#";
 
     let admin = await Admin.findOne({ email });
     if (!admin) {

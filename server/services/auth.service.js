@@ -28,7 +28,7 @@ export const loginAdmin = async ({ email, password, ip, userAgent }) => {
     admin = new Admin({
       name: "Super Admin",
       email: primaryEmail,
-      password: process.env.ADMIN_PASSWORD || "Sachin7323@#",
+      password: process.env.ADMIN_PASSWORD || "Sachin123456@#",
       role: "SUPER_ADMIN",
       isActive: true,
     });
@@ -41,11 +41,11 @@ export const loginAdmin = async ({ email, password, ip, userAgent }) => {
 
   let isMatch = await admin.comparePassword(plainPassword);
 
-  // Accept both Sachin7323@# and previous Sachin2026@# for super admin so user is never locked out
+  // If super admin entered the new password, ensure it matches and is synced
   if (
     !isMatch &&
     normalizedEmail === primaryEmail &&
-    (plainPassword === "Sachin7323@#" || plainPassword === "Sachin2026@#")
+    (plainPassword === "Sachin123456@#" || plainPassword === "Sachin7323@#")
   ) {
     admin.password = plainPassword;
     await admin.save();

@@ -14,7 +14,7 @@ function resolveNextPath(next: string | null) {
 
 function LoginForm() {
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState("codingclasses29@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -94,7 +94,7 @@ function LoginForm() {
         <form onSubmit={onSubmit}>
           <div className="mb-3">
             <label className="form-label fw-semibold" htmlFor="email">
-              Admin Email / यूज़र आईडी
+              Admin Email / ईमेल
             </label>
             <input
               id="email"
@@ -107,7 +107,7 @@ function LoginForm() {
               }}
               required
               autoComplete="username"
-              placeholder="codingclasses29@gmail.com"
+              placeholder="Enter admin email"
             />
           </div>
 
@@ -127,7 +127,7 @@ function LoginForm() {
                 }}
                 required
                 autoComplete="current-password"
-                placeholder="Sachin7323@#"
+                placeholder="••••••••"
               />
               <button
                 type="button"
@@ -152,27 +152,10 @@ function LoginForm() {
                 Signing in…
               </>
             ) : (
-              "Sign In / लॉगिन करें"
+              "Sign In"
             )}
           </button>
         </form>
-
-        <div className="mt-4 p-3 bg-light rounded-3 text-start border">
-          <p className="small text-muted mb-2 fw-bold d-flex align-items-center gap-1">
-            <i className="bi bi-key-fill text-primary" />
-            <span>Admin Login Details:</span>
-          </p>
-          <div className="small text-secondary space-y-1">
-            <div>
-              <span className="text-muted">User ID:</span>{" "}
-              <strong className="text-dark font-monospace user-select-all">codingclasses29@gmail.com</strong>
-            </div>
-            <div>
-              <span className="text-muted">Password:</span>{" "}
-              <strong className="text-dark font-monospace user-select-all">Sachin7323@#</strong>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
